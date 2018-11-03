@@ -166,8 +166,13 @@ public class UsuarioDao {
         return iResult;
     }
 
-    public ArrayList<UsuarioBean> getpage(int iRpp, int iPage) throws Exception {
-        String strSQL = "SELECT * FROM " + ob;
+    public ArrayList<UsuarioBean> getpage(int iRpp, int iPage, String tabla, String orden) throws Exception {
+        String strSQL = "";
+        if (tabla != null) {
+            strSQL = "SELECT * FROM " + ob + "  ORDER by " + tabla + " " + orden;
+        } else {
+            strSQL = "SELECT * FROM " + ob;
+        }
         ArrayList<UsuarioBean> alUsuarioBean;
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
             strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
@@ -190,7 +195,7 @@ public class UsuarioDao {
                     alUsuarioBean.add(oUsuarioBean);
                 }
             } catch (SQLException e) {
-                throw new Exception("Error en Dao getpage de " + ob , e);
+                throw new Exception("Error en Dao getpage de " + ob, e);
             } finally {
                 if (oResultSet != null) {
                     oResultSet.close();
