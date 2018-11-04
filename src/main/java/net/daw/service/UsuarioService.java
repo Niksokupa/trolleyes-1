@@ -156,8 +156,8 @@ public class UsuarioService {
 		try {
 			Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
 			Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
-                        String tabla = oRequest.getParameter("tabla");
-                        String orden = oRequest.getParameter("orden");
+                        String tabla = oRequest.getParameter("table");
+                        String orden = oRequest.getParameter("order");
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
