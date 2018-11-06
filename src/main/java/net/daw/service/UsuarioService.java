@@ -163,22 +163,12 @@ public class UsuarioService {
 		try {
 			Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
 			Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
-<<<<<<< HEAD
-                        String tabla = oRequest.getParameter("table");
-                        String orden = oRequest.getParameter("order");
-			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-			oConnection = oConnectionPool.newConnection();
-			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
-			ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpage(iRpp, iPage, tabla, orden);
-			Gson oGson = new Gson();
-=======
 			HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
 			ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpage(iRpp, iPage, hmOrder);
 			Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
->>>>>>> c4dc9e425c6612315582fab73ee26d63d3182d4f
 			oReplyBean = new ReplyBean(200, oGson.toJson(alUsuarioBean));
 		} catch (Exception ex) {
 			throw new Exception("ERROR: Service level: get page: " + ob + " object", ex);
