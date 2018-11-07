@@ -156,11 +156,6 @@ public class UsuarioService {
             oConnection = oConnectionPool.newConnection();
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
             ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpage(iRpp, iPage, hmOrder);
-
-//            for(UsuarioBean d : alUsuarioBean) {
-//            	d.setTipoUsuario(oTipousuarioDao.get(d.getId_tipoUsuario()));
-//            }
-            // Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create(); -- con .excludeFieldsWithoutExposeAnnotation() no guarda el id en el objeto tipousuario
             Gson oGson = (new GsonBuilder()).create();
             oReplyBean = new ReplyBean(200, oGson.toJson(alUsuarioBean));
         } catch (Exception ex) {
