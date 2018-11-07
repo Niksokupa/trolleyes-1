@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import net.daw.bean.TipousuarioBean;
 
 import net.daw.bean.UsuarioBean;
 import net.daw.helper.SqlBuilder;
@@ -33,6 +34,7 @@ public class UsuarioDao {
 	public UsuarioBean get(int id) throws Exception {
 		String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
 		UsuarioBean oUsuarioBean;
+                TipousuarioBean oTipousuarioBean;
 		ResultSet oResultSet = null;
 		PreparedStatement oPreparedStatement = null;
 		try {
@@ -41,6 +43,7 @@ public class UsuarioDao {
 			oResultSet = oPreparedStatement.executeQuery();
 			if (oResultSet.next()) {
 				oUsuarioBean = new UsuarioBean();
+                                oTipousuarioBean = new TipousuarioBean();
 				oUsuarioBean.setId(oResultSet.getInt("id"));
 				oUsuarioBean.setDni(oResultSet.getString("dni"));
 				oUsuarioBean.setNombre(oResultSet.getString("nombre"));
@@ -48,7 +51,8 @@ public class UsuarioDao {
 				oUsuarioBean.setApe2(oResultSet.getString("ape2"));
 				oUsuarioBean.setLogin(oResultSet.getString("login"));
 				oUsuarioBean.setPass(oResultSet.getString("pass"));
-				oUsuarioBean.setId_tipoUsuario(oResultSet.getInt("id_tipoUsuario"));
+                                oTipousuarioBean.setId(oResultSet.getInt("id_tipoUsuario"));
+				oUsuarioBean.setObj_tipoUsuario(oTipousuarioBean);
 			} else {
 				oUsuarioBean = null;
 			}
@@ -120,7 +124,7 @@ public class UsuarioDao {
 			oPreparedStatement.setString(4, oUsuarioBean.getApe2());
 			oPreparedStatement.setString(5, oUsuarioBean.getLogin());
 			oPreparedStatement.setString(6, oUsuarioBean.getPass());
-			oPreparedStatement.setInt(7, oUsuarioBean.getId_tipoUsuario());
+			oPreparedStatement.setInt(7, oUsuarioBean.getObj_tipoUsuario().getId());
 			oPreparedStatement.executeUpdate();
 			oResultSet = oPreparedStatement.getGeneratedKeys();
 			if (oResultSet.next()) {
@@ -157,7 +161,7 @@ public class UsuarioDao {
 			oPreparedStatement.setString(4, oUsuarioBean.getApe2());
 			oPreparedStatement.setString(5, oUsuarioBean.getLogin());
 			oPreparedStatement.setString(6, oUsuarioBean.getPass());
-			oPreparedStatement.setInt(7, oUsuarioBean.getId_tipoUsuario());
+			oPreparedStatement.setInt(7, oUsuarioBean.getObj_tipoUsuario().getId());
 			oPreparedStatement.setInt(8, oUsuarioBean.getId());
 			iResult = oPreparedStatement.executeUpdate();
 
@@ -185,6 +189,7 @@ public class UsuarioDao {
 				alUsuarioBean = new ArrayList<UsuarioBean>();
 				while (oResultSet.next()) {
 					UsuarioBean oUsuarioBean = new UsuarioBean();
+                                        TipousuarioBean oTipousuarioBean = new TipousuarioBean();
 					oUsuarioBean.setId(oResultSet.getInt("id"));
 					oUsuarioBean.setDni(oResultSet.getString("dni"));
 					oUsuarioBean.setNombre(oResultSet.getString("nombre"));
@@ -192,7 +197,8 @@ public class UsuarioDao {
 					oUsuarioBean.setApe2(oResultSet.getString("ape2"));
 					oUsuarioBean.setLogin(oResultSet.getString("login"));
 					oUsuarioBean.setPass(null);
-					oUsuarioBean.setId_tipoUsuario(oResultSet.getInt("id_tipoUsuario"));
+                                        oTipousuarioBean.setId(oResultSet.getInt("id_tipoUsuario"));
+					oUsuarioBean.setObj_tipoUsuario(oTipousuarioBean);
 					alUsuarioBean.add(oUsuarioBean);
 				}
 			} catch (SQLException e) {

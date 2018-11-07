@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import net.daw.bean.FacturaBean;
-import net.daw.bean.TipousuarioBean;
+import net.daw.bean.UsuarioBean;
 
 /**
  *
@@ -31,6 +31,7 @@ public class FacturaDao {
 	public FacturaBean get(int id) throws Exception {
 		String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
 		FacturaBean oFacturaBean;
+                UsuarioBean oUsuarioBean;
 		ResultSet oResultSet = null;
 		PreparedStatement oPreparedStatement = null;
 		try {
@@ -39,10 +40,12 @@ public class FacturaDao {
 			oResultSet = oPreparedStatement.executeQuery();
 			if (oResultSet.next()) {
 				oFacturaBean = new FacturaBean();
+                                oUsuarioBean = new UsuarioBean();
 				oFacturaBean.setId(oResultSet.getInt("id"));
                                 oFacturaBean.setFecha(oResultSet.getDate("fecha"));
                                 oFacturaBean.setIva(oResultSet.getDouble("iva"));
-                                oFacturaBean.setId_usuario(oResultSet.getInt("id_usuario"));
+                                oUsuarioBean.setId(oResultSet.getInt("id_usuario"));
+                                oFacturaBean.setObj_usuario(oUsuarioBean);
 			} else {
 				oFacturaBean = null;
 			}
@@ -109,7 +112,7 @@ public class FacturaDao {
 			oPreparedStatement = oConnection.prepareStatement(strSQL);
 			oPreparedStatement.setDate(1, (Date) oFacturaBean.getFecha());
                         oPreparedStatement.setDouble(2, oFacturaBean.getIva());
-                        oPreparedStatement.setInt(3, oFacturaBean.getId_usuario());
+                        oPreparedStatement.setInt(3, oFacturaBean.getObj_usuario().getId());
 			oPreparedStatement.executeUpdate();
 			oResultSet = oPreparedStatement.getGeneratedKeys();
 			if (oResultSet.next()) {
@@ -139,7 +142,7 @@ public class FacturaDao {
 			oPreparedStatement.setDate(1, (Date) oFacturaBean.getFecha());
 			oPreparedStatement.setDouble(2, oFacturaBean.getIva());
                         oPreparedStatement.setDouble(3, oFacturaBean.getIva());
-                        oPreparedStatement.setDouble(4, oFacturaBean.getId_usuario());
+                        oPreparedStatement.setDouble(4, oFacturaBean.getObj_usuario().getId());
 			iResult = oPreparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -165,10 +168,12 @@ public class FacturaDao {
 				alFacturaBean = new ArrayList<FacturaBean>();
 				while (oResultSet.next()) {
 					FacturaBean oFacturaBean = new FacturaBean();
+                                        UsuarioBean oUsuarioBean = new UsuarioBean();
                                         oFacturaBean.setId(oResultSet.getInt("id"));
                                         oFacturaBean.setFecha(oResultSet.getDate("fecha"));
                                         oFacturaBean.setIva(oResultSet.getDouble("iva"));
-                                        oFacturaBean.setId_usuario(oResultSet.getInt("id_usuario"));
+                                        oUsuarioBean.setId(oResultSet.getInt("id_usuario"));
+                                        oFacturaBean.setObj_usuario(oUsuarioBean);
 					alFacturaBean.add(oFacturaBean);
 				}
 			} catch (SQLException e) {

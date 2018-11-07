@@ -13,39 +13,28 @@ import com.google.gson.annotations.Expose;
  */
 public class UsuarioBean {
 
-	@Expose
-    private int id;    
-	@Expose
+    private int id;
     private String dni;
-	@Expose
     private String nombre;
-	@Expose
     private String ape1;
-	@Expose
     private String ape2;
-	@Expose
     private String login;
-	@Expose
     private String pass;
-	@Expose(serialize=false)
-    private int id_tipoUsuario;    
-    @Expose(deserialize=false)
     private TipousuarioBean obj_tipoUsuario;
-    
 
     public int getId() {
         return id;
     }
 
     public TipousuarioBean getObj_tipoUsuario() {
-		return obj_tipoUsuario;
-	}
+        return obj_tipoUsuario;
+    }
 
-	public void setObj_tipoUsuario(TipousuarioBean obj_tipoUsuario) {
-		this.obj_tipoUsuario = obj_tipoUsuario;
-	}
+    public void setObj_tipoUsuario(TipousuarioBean obj_tipoUsuario) {
+        this.obj_tipoUsuario = obj_tipoUsuario;
+    }
 
-	public void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -95,14 +84,6 @@ public class UsuarioBean {
 
     public void setPass(String pass) {
         this.pass = pass;
-    }
-
-    public int getId_tipoUsuario() {
-        return id_tipoUsuario;
-    }
-
-    public void setId_tipoUsuario(int id_tipoUsuario) {
-        this.id_tipoUsuario = id_tipoUsuario;
     }
 
 }

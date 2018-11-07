@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import net.daw.bean.FacturaBean;
 import net.daw.bean.LineaBean;
+import net.daw.bean.ProductoBean;
 import net.daw.bean.TipousuarioBean;
 
 /**
@@ -31,6 +33,9 @@ public class LineaDao {
     public LineaBean get(int id) throws Exception {
         String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
         LineaBean oLineaBean;
+        ProductoBean oProductoBean;
+        FacturaBean oFacturaBean;
+        
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {
@@ -39,10 +44,16 @@ public class LineaDao {
             oResultSet = oPreparedStatement.executeQuery();
             if (oResultSet.next()) {
                 oLineaBean = new LineaBean();
+                oProductoBean = new ProductoBean();
+                oFacturaBean = new FacturaBean();
+                
                 oLineaBean.setId(oResultSet.getInt("id"));
                 oLineaBean.setCantidad(oResultSet.getInt("cantidad"));
-                oLineaBean.setId_producto(oResultSet.getInt("id_producto"));
-                oLineaBean.setId_factura(oResultSet.getInt("id_factura"));
+                oProductoBean.setId(oResultSet.getInt("id_producto"));
+                oFacturaBean.setId(oResultSet.getInt("id_factura"));
+                
+                oLineaBean.setObj_producto(oProductoBean);
+                oLineaBean.setObj_factura(oFacturaBean);
             } else {
                 oLineaBean = null;
             }
@@ -108,8 +119,8 @@ public class LineaDao {
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
             oPreparedStatement.setInt(1, oLineaBean.getCantidad());
-            oPreparedStatement.setInt(2, oLineaBean.getId_producto());
-            oPreparedStatement.setInt(3, oLineaBean.getId_factura());
+            oPreparedStatement.setInt(2, oLineaBean.getObj_producto().getId());
+            oPreparedStatement.setInt(3, oLineaBean.getObj_factura().getId());
             oPreparedStatement.executeUpdate();
             oResultSet = oPreparedStatement.getGeneratedKeys();
             if (oResultSet.next()) {
@@ -138,8 +149,8 @@ public class LineaDao {
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
             oPreparedStatement.setInt(1, oLineaBean.getCantidad());
-            oPreparedStatement.setInt(2, oLineaBean.getId_producto());
-            oPreparedStatement.setInt(3, oLineaBean.getId_factura());
+            oPreparedStatement.setInt(2, oLineaBean.getObj_producto().getId());
+            oPreparedStatement.setInt(3, oLineaBean.getObj_factura().getId());
             oPreparedStatement.setInt(4, oLineaBean.getId());
             iResult = oPreparedStatement.executeUpdate();
 
@@ -166,10 +177,16 @@ public class LineaDao {
                 alLineaBean = new ArrayList<LineaBean>();
                 while (oResultSet.next()) {
                     LineaBean oLineaBean = new LineaBean();
+                    ProductoBean oProductoBean = new ProductoBean();
+                    FacturaBean oFacturaBean = new FacturaBean();
+                    
                     oLineaBean.setId(oResultSet.getInt("id"));
                     oLineaBean.setCantidad(oResultSet.getInt("cantidad"));
-                    oLineaBean.setId_producto(oResultSet.getInt("id_producto"));
-                    oLineaBean.setId_factura(oResultSet.getInt("id_factura"));
+                    oProductoBean.setId(oResultSet.getInt("id_producto"));
+                    oFacturaBean.setId(oResultSet.getInt("id_factura"));
+                    oLineaBean.setObj_factura(oFacturaBean);
+                    oLineaBean.setObj_producto(oProductoBean);
+                    
                     alLineaBean.add(oLineaBean);
                 }
             } catch (SQLException e) {

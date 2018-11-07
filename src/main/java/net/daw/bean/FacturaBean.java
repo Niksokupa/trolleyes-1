@@ -9,14 +9,14 @@ import java.util.Date;
 
 /**
  *
- * @author a044531896d
+ * @author Jesus
  */
 public class FacturaBean {
 
     private int id;
     private Date fecha;
     private double iva;
-    private int id_usuario;
+    private UsuarioBean obj_usuario;
 
     public int getId() {
         return id;
@@ -42,12 +42,14 @@ public class FacturaBean {
         this.iva = iva;
     }
 
-    public int getId_usuario() {
-        return id_usuario;
+    public UsuarioBean getObj_usuario() {
+        return obj_usuario;
     }
 
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setObj_usuario(UsuarioBean obj_usuario) {
+        this.obj_usuario = obj_usuario;
     }
+
+
 
 }

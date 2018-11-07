@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import net.daw.bean.ProductoBean;
 import net.daw.bean.ProductoBean;
+import net.daw.bean.TipoproductoBean;
 
 /**
  *
@@ -30,6 +31,7 @@ public class ProductoDao {
 	public ProductoBean get(int id) throws Exception {
 		String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
 		ProductoBean oProductoBean;
+                TipoproductoBean oTipoproductoBean;
 		ResultSet oResultSet = null;
 		PreparedStatement oPreparedStatement = null;
 		try {
@@ -38,13 +40,16 @@ public class ProductoDao {
 			oResultSet = oPreparedStatement.executeQuery();
 			if (oResultSet.next()) {
 				oProductoBean = new ProductoBean();
+                                oTipoproductoBean = new TipoproductoBean();
+                                
 				oProductoBean.setId(oResultSet.getInt("id"));
                                 oProductoBean.setCodigo(oResultSet.getString("codigo"));
                                 oProductoBean.setDesc(oResultSet.getString("desc"));
 				oProductoBean.setExistencias(oResultSet.getInt("existencias"));
                                 oProductoBean.setPrecio(oResultSet.getFloat("precio"));
                                 oProductoBean.setFoto(oResultSet.getString("foto"));
-                                oProductoBean.setId_tipoProducto(oResultSet.getInt("id_tipoProducto"));
+                                oTipoproductoBean.setId(oResultSet.getInt("id_tipoProducto"));
+                                oProductoBean.setObj_TipoproductoBean(oTipoproductoBean);
 			} else {
 				oProductoBean= null;
 			}
@@ -114,7 +119,7 @@ public class ProductoDao {
                         oPreparedStatement.setInt(3, oProductoBean.getExistencias());
                         oPreparedStatement.setFloat(4, oProductoBean.getPrecio());
                         oPreparedStatement.setString(5, oProductoBean.getFoto());
-                        oPreparedStatement.setInt(6, oProductoBean.getId_tipoProducto());
+                        oPreparedStatement.setInt(6, oProductoBean.getObj_TipoproductoBean().getId());
 			oPreparedStatement.executeUpdate();
 			oResultSet = oPreparedStatement.getGeneratedKeys();
 			if (oResultSet.next()) {
@@ -147,7 +152,7 @@ public class ProductoDao {
                         oPreparedStatement.setInt(3, oProductoBean.getExistencias());
                         oPreparedStatement.setFloat(4, oProductoBean.getPrecio());
                         oPreparedStatement.setString(5, oProductoBean.getFoto());
-                        oPreparedStatement.setInt(6, oProductoBean.getId_tipoProducto());
+                        oPreparedStatement.setInt(6, oProductoBean.getObj_TipoproductoBean().getId());
                         oPreparedStatement.setInt(7, oProductoBean.getId());
 			iResult = oPreparedStatement.executeUpdate();
 
@@ -174,13 +179,15 @@ public class ProductoDao {
 				alProductoBean= new ArrayList<ProductoBean>();
 				while (oResultSet.next()) {
 					ProductoBean oProductoBean = new ProductoBean();
+                                        TipoproductoBean oTipoproductoBean = new TipoproductoBean();
 					oProductoBean.setId(oResultSet.getInt("id"));
                                         oProductoBean.setCodigo(oResultSet.getString("codigo"));
 					oProductoBean.setDesc(oResultSet.getString("desc"));
                                         oProductoBean.setExistencias(oResultSet.getInt("existencias"));
                                         oProductoBean.setPrecio(oResultSet.getFloat("precio"));
                                         oProductoBean.setFoto(oResultSet.getString("foto"));
-                                        oProductoBean.setId_tipoProducto(oResultSet.getInt("id_tipoProducto"));
+                                        oTipoproductoBean.setId(oResultSet.getInt("id_tipoProducto"));
+                                        oProductoBean.setObj_TipoproductoBean(oTipoproductoBean);
 					alProductoBean.add(oProductoBean);
 				}
 			} catch (SQLException e) {

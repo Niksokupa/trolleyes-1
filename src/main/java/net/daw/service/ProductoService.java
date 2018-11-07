@@ -155,7 +155,7 @@ public class ProductoService {
 
     }
 
-    public ReplyBean loaddata() throws Exception {
+    public ReplyBean fill() throws Exception {
         ReplyBean oReplyBean;
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;

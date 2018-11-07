@@ -7,7 +7,7 @@ package net.daw.bean;
 
 /**
  *
- * @author a044531896d
+ * @author Jesus
  */
 public class ProductoBean {
     private int id;
@@ -16,7 +16,7 @@ public class ProductoBean {
     private int existencias;
     private float precio;
     private String foto;
-    private int id_tipoProducto;
+    private TipoproductoBean obj_TipoproductoBean;
 
     public int getId() {
         return id;
@@ -66,14 +66,11 @@ public class ProductoBean {
         this.foto = foto;
     }
 
-    public int getId_tipoProducto() {
-        return id_tipoProducto;
+    public TipoproductoBean getObj_TipoproductoBean() {
+        return obj_TipoproductoBean;
     }
 
-    public void setId_tipoProducto(int id_tipoProducto) {
-        this.id_tipoProducto = id_tipoProducto;
+    public void setObj_TipoproductoBean(TipoproductoBean obj_TipoproductoBean) {
+        this.obj_TipoproductoBean = obj_TipoproductoBean;
     }
-    
-    
-    
 }

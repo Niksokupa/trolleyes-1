@@ -7,10 +7,14 @@ package net.daw.bean;
 
 /**
  *
- * @author a044531896d
+ * @author Jesus
  */
 public class LineaBean {
-    private int id,cantidad,id_producto,id_factura;
+
+    private int id;
+    private int cantidad;
+    private ProductoBean obj_producto;
+    private FacturaBean obj_factura;
 
     public int getId() {
         return id;
@@ -28,22 +32,22 @@ public class LineaBean {
         this.cantidad = cantidad;
     }
 
-    public int getId_producto() {
-        return id_producto;
+    public ProductoBean getObj_producto() {
+        return obj_producto;
     }
 
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
+    public void setObj_producto(ProductoBean obj_producto) {
+        this.obj_producto = obj_producto;
     }
 
-    public int getId_factura() {
-        return id_factura;
+    public FacturaBean getObj_factura() {
+        return obj_factura;
     }
 
-    public void setId_factura(int id_factura) {
-        this.id_factura = id_factura;
+    public void setObj_factura(FacturaBean obj_factura) {
+        this.obj_factura = obj_factura;
     }
-    
-    
-    
+
+
+
 }
