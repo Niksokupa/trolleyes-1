@@ -5,12 +5,12 @@ import java.util.Map;
 
 public class SqlBuilder {
 
-	public static String buildSqlOrder(HashMap<String, String> hmOrder) {
+	public static String buildSqlOrder(HashMap<String, String> hmOrder, String tabla) {
 		String strSQLOrder;
 		if (hmOrder != null) {
 			strSQLOrder = " ORDER BY ";
 			for (Map.Entry<String, String> oPar : hmOrder.entrySet()) {
-				strSQLOrder += oPar.getKey();
+				strSQLOrder += tabla + "." +oPar.getKey();
 				strSQLOrder += " ";
 				strSQLOrder += oPar.getValue();
 				strSQLOrder += ",";

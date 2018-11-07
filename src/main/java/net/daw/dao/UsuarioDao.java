@@ -176,8 +176,8 @@ public class UsuarioDao {
 	}
 
 	public ArrayList<UsuarioBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder) throws Exception {
-		String strSQL = "select u.id,u.dni,u.nombre,u.ape1,u.ape2,u.login,tu.id,tu.desc from usuario u, tipousuario tu where u.id_tipoUsuario = tu.id";
-		strSQL += SqlBuilder.buildSqlOrder(hmOrder);
+		String strSQL = "select u.id,u.dni,u.nombre,u.ape1,u.ape2,u.login,tu.id,tu.desc from usuario u, tipousuario tu where u.id_tipoUsuario = tu.id ";
+		strSQL += SqlBuilder.buildSqlOrder(hmOrder, "u");
 		ArrayList<UsuarioBean> alUsuarioBean;
 		if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
 			strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
