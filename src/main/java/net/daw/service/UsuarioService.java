@@ -121,16 +121,10 @@ public class UsuarioService {
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
         try {
-            Gson oGson = new Gson();
+            String strJsonFromClient = oRequest.getParameter("json");
+            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
             UsuarioBean oUsuarioBean = new UsuarioBean();
-            String inputLine;
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(oRequest.getInputStream()));
-            // feed response into the StringBuilder
-            while ((inputLine = in.readLine()) != null) {
-                System.out.print(inputLine);
-            }
-            oUsuarioBean = oGson.fromJson(oRequest.getParameter("data"), UsuarioBean.class);
+            oUsuarioBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
