@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -120,10 +121,16 @@ public class UsuarioService {
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
         try {
-            String strJsonFromClient = oRequest.getParameter("json");
-            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
+            Gson oGson = new Gson();
             UsuarioBean oUsuarioBean = new UsuarioBean();
-            oUsuarioBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
+            String inputLine;
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(oRequest.getInputStream()));
+            // feed response into the StringBuilder
+            while ((inputLine = in.readLine()) != null) {
+                System.out.print(inputLine);
+            }
+            oUsuarioBean = oGson.fromJson(oRequest.getParameter("data"), UsuarioBean.class);
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
@@ -174,7 +181,7 @@ public class UsuarioService {
 //                        UsuarioBean usuario2 = new Gson().fromJson(oRequest.getReader(), UsuarioBean.class);
 //                        System.out.println(usuario2);
             ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpage(iRpp, iPage, hmOrder);
-            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
+            Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(alUsuarioBean));
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: get page: " + ob + " object", ex);

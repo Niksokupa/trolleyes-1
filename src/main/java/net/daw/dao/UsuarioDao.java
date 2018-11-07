@@ -176,7 +176,7 @@ public class UsuarioDao {
 	}
 
 	public ArrayList<UsuarioBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder) throws Exception {
-		String strSQL = "SELECT * FROM " + ob;
+		String strSQL = "select u.id,u.dni,u.nombre,u.ape1,u.ape2,u.login,tu.id,tu.desc from usuario u, tipousuario tu where u.id_tipoUsuario = tu.id";
 		strSQL += SqlBuilder.buildSqlOrder(hmOrder);
 		ArrayList<UsuarioBean> alUsuarioBean;
 		if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
@@ -197,7 +197,8 @@ public class UsuarioDao {
 					oUsuarioBean.setApe2(oResultSet.getString("ape2"));
 					oUsuarioBean.setLogin(oResultSet.getString("login"));
 					oUsuarioBean.setPass(null);
-                                        oTipousuarioBean.setId(oResultSet.getInt("id_tipoUsuario"));
+                                        oTipousuarioBean.setId(oResultSet.getInt("tu.id"));
+                                        oTipousuarioBean.setDesc(oResultSet.getString("tu.desc"));
 					oUsuarioBean.setObj_tipoUsuario(oTipousuarioBean);
 					alUsuarioBean.add(oUsuarioBean);
 				}
