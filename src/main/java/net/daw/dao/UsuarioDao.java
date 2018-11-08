@@ -31,7 +31,7 @@ public class UsuarioDao {
 		this.ob = ob;
 	}
 
-	public UsuarioBean get(int id) throws Exception {
+	public UsuarioBean get(int id, Integer expand) throws Exception {
 		String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
 		UsuarioBean oUsuarioBean;
                 TipousuarioBean oTipousuarioBean;
@@ -43,16 +43,12 @@ public class UsuarioDao {
 			oResultSet = oPreparedStatement.executeQuery();
 			if (oResultSet.next()) {
 				oUsuarioBean = new UsuarioBean();
-                                oTipousuarioBean = new TipousuarioBean();
-				oUsuarioBean.setId(oResultSet.getInt("id"));
-				oUsuarioBean.setDni(oResultSet.getString("dni"));
-				oUsuarioBean.setNombre(oResultSet.getString("nombre"));
-				oUsuarioBean.setApe1(oResultSet.getString("ape1"));
-				oUsuarioBean.setApe2(oResultSet.getString("ape2"));
-				oUsuarioBean.setLogin(oResultSet.getString("login"));
-				oUsuarioBean.setPass(oResultSet.getString("pass"));
-                                oTipousuarioBean.setId(oResultSet.getInt("id_tipoUsuario"));
-				oUsuarioBean.setObj_tipoUsuario(oTipousuarioBean);
+				oUsuarioBean.fill(oResultSet, oConnection, expand);
+				
+				
+				
+				
+				
 			} else {
 				oUsuarioBean = null;
 			}
@@ -175,10 +171,9 @@ public class UsuarioDao {
 		return iResult;
 	}
 
-	public ArrayList<UsuarioBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder) throws Exception {
-		String strSQL = "select u.id,u.dni,u.nombre,u.ape1,u.ape2,u.login,tu.id,tu.desc from usuario u, tipousuario tu where u.id_tipoUsuario = tu.id ";
-                //Aqui esta el cambio
-		strSQL += SqlBuilder.buildSqlOrder(hmOrder, "u");
+	public ArrayList<UsuarioBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder, Integer expand) throws Exception {
+		String strSQL = "SELECT * FROM " + ob;
+		strSQL += SqlBuilder.buildSqlOrder(hmOrder);
 		ArrayList<UsuarioBean> alUsuarioBean;
 		if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
 			strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
@@ -190,17 +185,11 @@ public class UsuarioDao {
 				alUsuarioBean = new ArrayList<UsuarioBean>();
 				while (oResultSet.next()) {
 					UsuarioBean oUsuarioBean = new UsuarioBean();
-                                        TipousuarioBean oTipousuarioBean = new TipousuarioBean();
-					oUsuarioBean.setId(oResultSet.getInt("id"));
-					oUsuarioBean.setDni(oResultSet.getString("dni"));
-					oUsuarioBean.setNombre(oResultSet.getString("nombre"));
-					oUsuarioBean.setApe1(oResultSet.getString("ape1"));
-					oUsuarioBean.setApe2(oResultSet.getString("ape2"));
-					oUsuarioBean.setLogin(oResultSet.getString("login"));
-					oUsuarioBean.setPass(null);
-                                        oTipousuarioBean.setId(oResultSet.getInt("tu.id"));
-                                        oTipousuarioBean.setDesc(oResultSet.getString("tu.desc"));
-					oUsuarioBean.setObj_tipoUsuario(oTipousuarioBean);
+					
+					
+					oUsuarioBean.fill(oResultSet, oConnection, expand);
+					
+					
 					alUsuarioBean.add(oUsuarioBean);
 				}
 			} catch (SQLException e) {
