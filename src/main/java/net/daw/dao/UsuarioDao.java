@@ -40,6 +40,7 @@ public class UsuarioDao {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
             oPreparedStatement.setInt(1, id);
             oResultSet = oPreparedStatement.executeQuery();
+            TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, "tipousuario");
             if (oResultSet.next()) {
                 oUsuarioBean = new UsuarioBean();
                 oUsuarioBean.setId(oResultSet.getInt("id"));
@@ -50,6 +51,8 @@ public class UsuarioDao {
                 oUsuarioBean.setLogin(oResultSet.getString("login"));
                 oUsuarioBean.setPass(oResultSet.getString("pass"));
                 oUsuarioBean.setId_tipoUsuario(oResultSet.getInt("id_tipoUsuario"));
+                TipousuarioBean oTipousuarioBean = oTipousuarioDao.get(oResultSet.getInt("id_tipoUsuario"));
+                oUsuarioBean.setTipoUsuario(oTipousuarioBean);
             } else {
                 oUsuarioBean = null;
             }
