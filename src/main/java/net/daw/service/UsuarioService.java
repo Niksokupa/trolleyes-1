@@ -156,7 +156,7 @@ public class UsuarioService {
             oConnection = oConnectionPool.newConnection();
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
             ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpage(iRpp, iPage, hmOrder);
-            Gson oGson = (new GsonBuilder()).create();
+            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
             oReplyBean = new ReplyBean(200, oGson.toJson(alUsuarioBean));
         } catch (Exception ex) {
             oReplyBean = new ReplyBean(500,
