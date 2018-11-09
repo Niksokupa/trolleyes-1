@@ -157,7 +157,7 @@ public class UsuarioDao {
 			oPreparedStatement.setString(4, oUsuarioBean.getApe2());
 			oPreparedStatement.setString(5, oUsuarioBean.getLogin());
 			oPreparedStatement.setString(6, oUsuarioBean.getPass());
-			oPreparedStatement.setInt(7, oUsuarioBean.getObj_tipoUsuario().getId());
+			oPreparedStatement.setInt(7, oUsuarioBean.getId_tipoUsuario());
 			oPreparedStatement.setInt(8, oUsuarioBean.getId());
 			iResult = oPreparedStatement.executeUpdate();
 
