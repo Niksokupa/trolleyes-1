@@ -1,12 +1,14 @@
 package net.daw.bean;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 import com.google.gson.annotations.Expose;
 
 public class TipousuarioBean {
-	
-    @Expose
+	@Expose
 	private int id;
-    @Expose
+	@Expose
 	private String desc;
 
 	public int getId() {
@@ -25,4 +27,9 @@ public class TipousuarioBean {
 		this.desc = desc;
 	}
 
+	public TipousuarioBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception {
+		this.setId(oResultSet.getInt("id"));
+		this.setDesc(oResultSet.getString("desc"));
+		return this;
+	}
 }
