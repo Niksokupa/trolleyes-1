@@ -163,8 +163,7 @@ public class UsuarioBean {
 		strPairs += "ape2=" + EncodingHelper.quotate(ape2) + ",";
 		strPairs += "login=" + EncodingHelper.quotate(login) + ",";
 		strPairs += "id_tipoUsuario=" + id_tipoUsuario;
+		strPairs += " WHERE id=" + id;
 		return strPairs;
-		
 	}
-	
 }
