@@ -5,6 +5,8 @@
  */
 package net.daw.bean;
 
+import net.daw.helper.EncodingHelper;
+
 /**
  *
  * @author Jesus
@@ -72,5 +74,41 @@ public class ProductoBean {
 
     public void setObj_TipoproductoBean(TipoproductoBean obj_TipoproductoBean) {
         this.obj_TipoproductoBean = obj_TipoproductoBean;
+    }
+    
+    public String getColumns(){
+        String strColumns="";
+        strColumns += "id,";
+        strColumns += "codigo,";
+        strColumns += "desc,";
+        strColumns += "existencias,";
+        strColumns += "precio,";
+        strColumns += "foto";
+        strColumns += "id_tipoProducto";
+        return strColumns;
+    }
+    
+    public String getValues(){
+        String strColumns = "";
+        strColumns += "null,";
+        strColumns += EncodingHelper.quotate(codigo) + ",";
+        strColumns += EncodingHelper.quotate(desc) + ",";
+        strColumns += existencias + ",";
+        strColumns += precio + ",";
+        strColumns += EncodingHelper.quotate(foto) + ",";
+        strColumns += obj_TipoproductoBean.getId() + ",";
+        return strColumns;
+    }
+    
+    public String getPairs(){
+        String strColumns = "";
+        strColumns += "id=" + id + ",";
+        strColumns += "codigo=" + EncodingHelper.quotate(codigo) + ",";
+        strColumns += "desc=" + EncodingHelper.quotate(desc) + ",";
+        strColumns += "existencias=" + existencias + ",";
+        strColumns += "precio=" + precio + ",";
+        strColumns += "foto=" + EncodingHelper.quotate(foto) + ",";
+        strColumns += "id_tipoProducto=" + obj_TipoproductoBean.getId() + ",";
+        return strColumns;
     }
 }
