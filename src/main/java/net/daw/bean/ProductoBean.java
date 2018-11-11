@@ -5,6 +5,10 @@
  */
 package net.daw.bean;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import net.daw.dao.TipoproductoDao;
 import net.daw.helper.EncodingHelper;
 
 /**
@@ -74,6 +78,21 @@ public class ProductoBean {
 
     public void setObj_TipoproductoBean(TipoproductoBean obj_TipoproductoBean) {
         this.obj_TipoproductoBean = obj_TipoproductoBean;
+    }
+    
+    public ProductoBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception{
+        this.setId(oResultSet.getInt("id"));
+        this.setCodigo(oResultSet.getString("codigo"));
+        this.setDesc(oResultSet.getString("des"));
+        this.setExistencias(oResultSet.getInt("existencias"));
+        this.setPrecio(oResultSet.getFloat("precio"));
+        this.setFoto(oResultSet.getString("foto"));
+        if(expand > 0){
+            TipoproductoDao oTipoproductoDao = new TipoproductoDao(oConnection, "tipoproducto");
+            this.setObj_TipoproductoBean(oTipoproductoDao.get(oResultSet.getInt("id_tipoProducto"), expand -1));
+        }
+        return this;
+        
     }
     
     public String getColumns(){

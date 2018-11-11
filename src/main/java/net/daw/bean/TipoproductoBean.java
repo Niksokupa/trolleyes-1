@@ -5,27 +5,61 @@
  */
 package net.daw.bean;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import net.daw.helper.EncodingHelper;
+
 /**
  *
  * @author a044531896d
  */
 public class TipoproductoBean {
-    	private int id;
-	private String desc;
 
-	public int getId() {
-		return id;
-	}
+    private int id;
+    private String desc;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getDesc() {
-		return desc;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public TipoproductoBean fill(ResultSet oResultSet, Connection connection) throws SQLException {
+        this.setId(oResultSet.getInt("id"));
+        this.setDesc(oResultSet.getString("desc"));
+        return this;
+    }
+
+    public String getColumns() {
+        String strColumns = "";
+        strColumns += "id,";
+        strColumns += "desc";
+        return strColumns;
+    }
+    
+    public String getValues(){
+        String strColumns="";
+        strColumns += "null,";
+        strColumns += EncodingHelper.quotate(desc) + ",";
+        return strColumns;
+    }
+    
+    public String getPairs(){
+        String strColumns = "";
+        strColumns += "id=" + id +",";
+        strColumns += "desc=" + desc +",";
+        return strColumns;
+    }
+
 }

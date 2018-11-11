@@ -120,8 +120,8 @@ public class UsuarioBean {
 		this.setLogin(oResultSet.getString("login"));
 		this.setPass(oResultSet.getString("pass"));
 		if (expand > 0) {
-			TipousuarioDao otipousuarioDao = new TipousuarioDao(oConnection, "tipousuario");
-			this.setObj_tipoUsuario(otipousuarioDao.get(oResultSet.getInt("id_tipoUsuario"), expand - 1));
+			TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, "tipousuario");
+			this.setObj_tipoUsuario(oTipousuarioDao.get(oResultSet.getInt("id_tipoUsuario"), expand - 1));
 		} else {
 			this.setId_tipoUsuario(oResultSet.getInt("id_tipoUsuario"));
 		}
