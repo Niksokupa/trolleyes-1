@@ -5,18 +5,38 @@
  */
 package net.daw.bean;
 
+import com.google.gson.annotations.Expose;
+
 /**
  *
  * @author a044531896d
  */
 public class ProductoBean {
+
+    @Expose
     private int id;
+    @Expose
     private String codigo;
+    @Expose
     private String desc;
+    @Expose
     private int existencias;
+    @Expose
     private float precio;
+    @Expose
     private String foto;
+    @Expose(serialize = false)
     private int id_tipoProducto;
+    @Expose(deserialize = false)
+    private TipoproductoBean obj_tipoProducto;
+
+    public TipoproductoBean getObj_tipoProducto() {
+        return obj_tipoProducto;
+    }
+
+    public void setObj_tipoProducto(TipoproductoBean obj_tipoProducto) {
+        this.obj_tipoProducto = obj_tipoProducto;
+    }
 
     public int getId() {
         return id;
@@ -73,7 +93,5 @@ public class ProductoBean {
     public void setId_tipoProducto(int id_tipoProducto) {
         this.id_tipoProducto = id_tipoProducto;
     }
-    
-    
-    
+
 }
