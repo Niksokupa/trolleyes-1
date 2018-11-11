@@ -16,7 +16,7 @@ import net.daw.bean.UsuarioBean;
 
 /**
  *
- * @author a044531896d
+ * @author Jesus
  */
 public class FacturaDao {
     Connection oConnection;
@@ -28,7 +28,7 @@ public class FacturaDao {
 		this.ob = ob;
 	}
 
-	public FacturaBean get(int id) throws Exception {
+	public FacturaBean get(int id, Integer expansion) throws Exception {
 		String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
 		FacturaBean oFacturaBean;
                 UsuarioBean oUsuarioBean;
@@ -40,12 +40,7 @@ public class FacturaDao {
 			oResultSet = oPreparedStatement.executeQuery();
 			if (oResultSet.next()) {
 				oFacturaBean = new FacturaBean();
-                                oUsuarioBean = new UsuarioBean();
-				oFacturaBean.setId(oResultSet.getInt("id"));
-                                oFacturaBean.setFecha(oResultSet.getDate("fecha"));
-                                oFacturaBean.setIva(oResultSet.getDouble("iva"));
-                                oUsuarioBean.setId(oResultSet.getInt("id_usuario"));
-                                oFacturaBean.setObj_usuario(oUsuarioBean);
+                                oFacturaBean.fill(oResultSet, oConnection,expansion);
 			} else {
 				oFacturaBean = null;
 			}
@@ -105,14 +100,15 @@ public class FacturaDao {
 	}
 
 	public FacturaBean create(FacturaBean oFacturaBean) throws Exception {
-		String strSQL = "INSERT INTO " + ob + " ( "+ob+".id,  "+ob+".fecha,  "+ob+".iva, "+ob+".id_usuario) VALUES (NULL, ?,?,?); ";
+		//String strSQL = "INSERT INTO " + ob + " ( "+ob+".id,  "+ob+".fecha,  "+ob+".iva, "+ob+".id_usuario) VALUES (NULL, ?,?,?); ";
+                String strSQL = "INSERT INTO " + ob;
+                strSQL += "(" + oFacturaBean.getColumns() + ")";
+                strSQL += " VALUES ";
+                strSQL += "(" + oFacturaBean.getPairs() + ")";
 		ResultSet oResultSet = null;
 		PreparedStatement oPreparedStatement = null;
 		try {
 			oPreparedStatement = oConnection.prepareStatement(strSQL);
-			oPreparedStatement.setDate(1, (Date) oFacturaBean.getFecha());
-                        oPreparedStatement.setDouble(2, oFacturaBean.getIva());
-                        oPreparedStatement.setInt(3, oFacturaBean.getObj_usuario().getId());
 			oPreparedStatement.executeUpdate();
 			oResultSet = oPreparedStatement.getGeneratedKeys();
 			if (oResultSet.next()) {

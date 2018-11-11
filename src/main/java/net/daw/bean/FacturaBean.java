@@ -5,7 +5,12 @@
  */
 package net.daw.bean;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
+import net.daw.dao.UsuarioDao;
+import net.daw.helper.EncodingHelper;
 
 /**
  *
@@ -50,6 +55,43 @@ public class FacturaBean {
         this.obj_usuario = obj_usuario;
     }
 
-
+    public FacturaBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception{
+        this.setId(oResultSet.getInt("id"));
+        this.setFecha(oResultSet.getDate("fecha"));
+        this.setIva(oResultSet.getDouble("iva"));
+        if(expand > 0){
+            UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
+            this.setObj_usuario(oUsuarioDao.get(oResultSet.getInt("id_usuario"), expand));
+        }
+        return this;
+    }
+    
+    public String getColumns(){
+        String strColumns = "";
+        strColumns += "id,";
+        strColumns += "fecha,";
+        strColumns += "iva,";
+        strColumns += "id_usuario";
+        return strColumns;
+    }
+    
+    public String getValues(){
+        String strColumns = "";
+        strColumns += "null,";
+        strColumns += fecha + ",";
+        strColumns += iva + ",";
+        strColumns += getObj_usuario().getId() + ",";
+        return strColumns;
+    }
+    
+    public String getPairs(){
+        String strPairs ="";
+        strPairs += "id=" + id + ",";
+        strPairs += "fecha=" + fecha + ",";
+        strPairs += "iva=" + iva + ",";
+        strPairs += "id_usuario=" + getObj_usuario().getId() + ",";
+        return strPairs;
+    }
+    
 
 }
