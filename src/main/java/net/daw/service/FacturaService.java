@@ -39,7 +39,7 @@ public class FacturaService {
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
-			FacturaBean oFacturaBean = oFacturaDao.get(id);
+			FacturaBean oFacturaBean = oFacturaDao.get(id,1);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(oFacturaBean));
 		} catch (Exception ex) {

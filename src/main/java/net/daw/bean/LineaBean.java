@@ -5,6 +5,12 @@
  */
 package net.daw.bean;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import net.daw.dao.FacturaDao;
+import net.daw.dao.ProductoDao;
+
 /**
  *
  * @author Jesus
@@ -48,6 +54,45 @@ public class LineaBean {
         this.obj_factura = obj_factura;
     }
 
+    public LineaBean fill(ResultSet oResultSet, Connection oConnection, Integer expandProducto, Integer expandFactura) throws SQLException, Exception {
+        this.setId(oResultSet.getInt("id"));
+        this.setCantidad(oResultSet.getInt("cantidad"));
+        if (expandProducto > 0) {
+            ProductoDao oProductoDao = new ProductoDao(oConnection, "producto");
+            this.setObj_producto(oProductoDao.get(oResultSet.getInt("id_producto"), expandProducto));
+        }
+        if (expandFactura > 0) {
+            FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
+            this.setObj_factura(oFacturaDao.get(oResultSet.getInt("id_factura"), expandFactura));
+        }
 
+        return this;
+    }
 
+    public String getColumns() {
+        String strColumns = "";
+        strColumns += "id,";
+        strColumns += "cantidad,";
+        strColumns += "id_producto,";
+        strColumns += "id_factura";
+        return strColumns;
+    }
+
+    public String getValues() {
+        String strColumns = "";
+        strColumns += "null,";
+        strColumns += cantidad + ",";
+        strColumns += obj_producto.getId() + ",";
+        strColumns += obj_factura.getId();
+        return strColumns;
+    }
+
+    public String getPairs() {
+        String strPairs = "";
+        strPairs += "id=" + id + ",";
+        strPairs += "cantidad=" + cantidad + ",";
+        strPairs += "id_producto=" + obj_producto.getId() + ",";
+        strPairs += "id_factura=" + obj_factura.getId();
+        return strPairs;
+    }
 }

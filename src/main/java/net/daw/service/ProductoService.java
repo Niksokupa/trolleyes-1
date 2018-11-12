@@ -32,7 +32,7 @@ public class ProductoService {
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            ProductoBean oProductoBean = oProductoDao.get(id);
+            ProductoBean oProductoBean = oProductoDao.get(id,1);
             Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(oProductoBean));
         } catch (Exception ex) {
