@@ -93,6 +93,7 @@ public class LineaBean {
         strPairs += "cantidad=" + cantidad + ",";
         strPairs += "id_producto=" + obj_producto.getId() + ",";
         strPairs += "id_factura=" + obj_factura.getId();
+        strPairs += " WHERE id=" + id;
         return strPairs;
     }
 }

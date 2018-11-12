@@ -120,14 +120,15 @@ public class ProductoBean {
     }
     
     public String getPairs(){
-        String strColumns = "";
-        strColumns += "id=" + id + ",";
-        strColumns += "codigo=" + EncodingHelper.quotate(codigo) + ",";
-        strColumns += "desc=" + EncodingHelper.quotate(desc) + ",";
-        strColumns += "existencias=" + existencias + ",";
-        strColumns += "precio=" + precio + ",";
-        strColumns += "foto=" + EncodingHelper.quotate(foto) + ",";
-        strColumns += "id_tipoProducto=" + obj_TipoproductoBean.getId() + ",";
-        return strColumns;
+        String strPairs = "";
+        strPairs += "id=" + id + ",";
+        strPairs += "codigo=" + EncodingHelper.quotate(codigo) + ",";
+        strPairs += "desc=" + EncodingHelper.quotate(desc) + ",";
+        strPairs += "existencias=" + existencias + ",";
+        strPairs += "precio=" + precio + ",";
+        strPairs += "foto=" + EncodingHelper.quotate(foto) + ",";
+        strPairs += "id_tipoProducto=" + obj_TipoproductoBean.getId() + ",";
+        strPairs += " WHERE id=" + id;
+        return strPairs;
     }
 }

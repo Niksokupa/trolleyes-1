@@ -56,10 +56,11 @@ public class TipoproductoBean {
     }
     
     public String getPairs(){
-        String strColumns = "";
-        strColumns += "id=" + id +",";
-        strColumns += "desc=" + desc;
-        return strColumns;
+        String strPairs = "";
+        strPairs += "id=" + id +",";
+        strPairs += "desc=" + desc;
+        strPairs += " WHERE id=" + id;
+        return strPairs;
     }
 
 }

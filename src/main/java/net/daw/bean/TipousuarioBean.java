@@ -52,6 +52,7 @@ public class TipousuarioBean {
             String strPairs = "";
             strPairs += "id=" + id + ",";
             strPairs += "desc=" + desc;
+            strPairs += " WHERE id=" + id;
             return strPairs;
         }
 }
