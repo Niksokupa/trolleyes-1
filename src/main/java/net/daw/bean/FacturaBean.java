@@ -89,7 +89,7 @@ public class FacturaBean {
         strPairs += "id=" + id + ",";
         strPairs += "fecha=" + fecha + ",";
         strPairs += "iva=" + iva + ",";
-        strPairs += "id_usuario=" + getObj_usuario().getId() + ",";
+        strPairs += "id_usuario=" + obj_usuario.getId();
         return strPairs;
     }
     
