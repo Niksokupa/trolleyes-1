@@ -8,6 +8,11 @@ import java.util.ArrayList;
 
 import net.daw.bean.TipousuarioBean;
 
+/**
+ *
+ * @author Jesus
+ */
+
 public class TipousuarioDao {
 
 	Connection oConnection;

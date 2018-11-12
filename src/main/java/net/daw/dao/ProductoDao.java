@@ -16,7 +16,7 @@ import net.daw.bean.TipoproductoBean;
 
 /**
  *
- * @author a044531896d
+ * @author Jesus
  */
 public class ProductoDao {
     Connection oConnection;
