@@ -62,6 +62,7 @@ public class FacturaBean {
         if(expand > 0){
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
             this.setObj_usuario(oUsuarioDao.get(oResultSet.getInt("id_usuario"), expand));
+            System.out.println(obj_usuario.getId());
         }
         return this;
     }
