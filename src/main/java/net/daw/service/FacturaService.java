@@ -8,6 +8,7 @@ package net.daw.service;
 import com.google.gson.Gson;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import net.daw.bean.FacturaBean;
 import net.daw.bean.ReplyBean;
@@ -18,6 +19,7 @@ import net.daw.dao.FacturaDao;
 import net.daw.dao.TipousuarioDao;
 import net.daw.factory.ConnectionFactory;
 import net.daw.helper.EncodingHelper;
+import net.daw.helper.ParameterCook;
 
 
 public class FacturaService {
@@ -146,10 +148,11 @@ public class FacturaService {
 		try {
 			Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
 			Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
+                        HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
-			ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpage(iRpp, iPage);
+			ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpage(iRpp, iPage, hmOrder,1);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(alFacturaBean));
 		} catch (Exception ex) {
