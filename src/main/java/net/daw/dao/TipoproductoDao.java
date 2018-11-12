@@ -104,7 +104,6 @@ public class TipoproductoDao {
 		PreparedStatement oPreparedStatement = null;
 		try {
 			oPreparedStatement = oConnection.prepareStatement(strSQL);
-			oPreparedStatement.setString(1, oTipoproductoBean.getDesc());
 			oPreparedStatement.executeUpdate();
 			oResultSet = oPreparedStatement.getGeneratedKeys();
 			if (oResultSet.next()) {

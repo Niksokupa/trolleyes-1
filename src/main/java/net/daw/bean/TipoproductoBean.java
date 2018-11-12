@@ -44,7 +44,7 @@ public class TipoproductoBean {
     public String getColumns() {
         String strColumns = "";
         strColumns += "id,";
-        strColumns += "desc";
+        strColumns += "tipoproducto.desc";
         return strColumns;
     }
     
@@ -58,7 +58,7 @@ public class TipoproductoBean {
     public String getPairs(){
         String strPairs = "";
         strPairs += "id=" + id +",";
-        strPairs += "desc=" + desc;
+        strPairs += "tipoproducto.desc=" + desc;
         strPairs += " WHERE id=" + id;
         return strPairs;
     }
