@@ -12,7 +12,7 @@ import net.daw.helper.EncodingHelper;
 
 /**
  *
- * @author a044531896d
+ * @author Jesus
  */
 public class TipoproductoBean {
 
@@ -51,14 +51,14 @@ public class TipoproductoBean {
     public String getValues(){
         String strColumns="";
         strColumns += "null,";
-        strColumns += EncodingHelper.quotate(desc) + ",";
+        strColumns += EncodingHelper.quotate(desc);
         return strColumns;
     }
     
     public String getPairs(){
         String strColumns = "";
         strColumns += "id=" + id +",";
-        strColumns += "desc=" + desc +",";
+        strColumns += "desc=" + desc;
         return strColumns;
     }
 
