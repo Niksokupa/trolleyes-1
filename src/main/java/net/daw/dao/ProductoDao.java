@@ -10,9 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import net.daw.bean.ProductoBean;
 import net.daw.bean.ProductoBean;
 import net.daw.bean.TipoproductoBean;
+import net.daw.helper.SqlBuilder;
 
 /**
  *
@@ -166,8 +168,9 @@ public class ProductoDao {
 		return iResult;
 	}
 
-	public ArrayList<ProductoBean> getpage(int iRpp, int iPage) throws Exception {
+	public ArrayList<ProductoBean> getpage(int iRpp, int iPage,HashMap<String, String> hmOrder, Integer expand) throws Exception {
 		String strSQL = "SELECT * FROM " + ob;
+                strSQL += SqlBuilder.buildSqlOrder(hmOrder);
 		ArrayList<ProductoBean> alProductoBean;
 		if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
 			strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
@@ -179,15 +182,7 @@ public class ProductoDao {
 				alProductoBean= new ArrayList<ProductoBean>();
 				while (oResultSet.next()) {
 					ProductoBean oProductoBean = new ProductoBean();
-                                        TipoproductoBean oTipoproductoBean = new TipoproductoBean();
-					oProductoBean.setId(oResultSet.getInt("id"));
-                                        oProductoBean.setCodigo(oResultSet.getString("codigo"));
-					oProductoBean.setDesc(oResultSet.getString("desc"));
-                                        oProductoBean.setExistencias(oResultSet.getInt("existencias"));
-                                        oProductoBean.setPrecio(oResultSet.getFloat("precio"));
-                                        oProductoBean.setFoto(oResultSet.getString("foto"));
-                                        oTipoproductoBean.setId(oResultSet.getInt("id_tipoProducto"));
-                                        oProductoBean.setObj_TipoproductoBean(oTipoproductoBean);
+                                        oProductoBean.fill(oResultSet, oConnection, expand);
 					alProductoBean.add(oProductoBean);
 				}
 			} catch (SQLException e) {

@@ -83,7 +83,7 @@ public class ProductoBean {
     public ProductoBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception{
         this.setId(oResultSet.getInt("id"));
         this.setCodigo(oResultSet.getString("codigo"));
-        this.setDesc(oResultSet.getString("des"));
+        this.setDesc(oResultSet.getString("desc"));
         this.setExistencias(oResultSet.getInt("existencias"));
         this.setPrecio(oResultSet.getFloat("precio"));
         this.setFoto(oResultSet.getString("foto"));
