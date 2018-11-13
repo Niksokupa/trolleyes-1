@@ -123,8 +123,7 @@ public class ProductoService {
             oConnection = oConnectionPool.newConnection();
             ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
             iRes = oProductoDao.update(oProductoBean);
-            oReplyBean = new ReplyBean(200, (Integer.toString(iRes)));
-
+            oReplyBean = new ReplyBean(200, Integer.toString(iRes));
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
         } finally {
