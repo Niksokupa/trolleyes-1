@@ -19,6 +19,7 @@ import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.constant.ConnectionConstants;
 import net.daw.dao.UsuarioDao;
 import net.daw.factory.ConnectionFactory;
+import net.daw.helper.EncodingHelper;
 import net.daw.helper.ParameterCook;
 
 /**
@@ -262,7 +263,7 @@ public class UsuarioService {
 
     public ReplyBean logout() throws Exception {
         oRequest.getSession().invalidate();
-        return new ReplyBean(200, "OK");
+        return new ReplyBean(200, EncodingHelper.quotate("OK"));
     }
 
     public ReplyBean check() throws Exception {
