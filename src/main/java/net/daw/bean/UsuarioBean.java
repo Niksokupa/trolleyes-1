@@ -150,7 +150,7 @@ public class UsuarioBean {
 		strColumns += EncodingHelper.quotate(ape1) + ",";
 		strColumns += EncodingHelper.quotate(ape2) + ",";
 		strColumns += EncodingHelper.quotate(login) + ",";		
-		strColumns += EncodingHelper.quotate("DA8AB09AB4889C6208116A675CAD0B13E335943BD7FC418782D054B32FDFBA04") + ",";			
+		strColumns += EncodingHelper.quotate(pass) + ",";			
 		strColumns += id_tipoUsuario;		
 		return strColumns;				
 	}
@@ -162,6 +162,7 @@ public class UsuarioBean {
 		strPairs += "ape1=" + EncodingHelper.quotate(ape1) + ",";
 		strPairs += "ape2=" + EncodingHelper.quotate(ape2) + ",";
 		strPairs += "login=" + EncodingHelper.quotate(login) + ",";
+                strPairs += "pass=" + EncodingHelper.quotate(pass) + ",";
 		strPairs += "id_tipoUsuario=" + id_tipoUsuario;
                 strPairs += " WHERE id=" + id;
 		return strPairs;

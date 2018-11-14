@@ -238,18 +238,24 @@ public class UsuarioService {
         String strLogin = oRequest.getParameter("user");
         String strPassword = oRequest.getParameter("pass");
 
-        oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-        oConnection = oConnectionPool.newConnection();
-        UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
+        try {
+            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+            oConnection = oConnectionPool.newConnection();
+            UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
 
-        UsuarioBean oUsuarioBean = oUsuarioDao.login(strLogin, strPassword);
-        if (oUsuarioBean != null) {
-            oRequest.getSession().setAttribute("user", oUsuarioBean);
-            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
-            oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
-        } else {
-            //throw new Exception("ERROR Bad Authentication: Service level: get page: " + ob + " object");
-            oReplyBean = new ReplyBean(401, "Bad Authentication");
+            UsuarioBean oUsuarioBean = oUsuarioDao.login(strLogin, strPassword);
+            if (oUsuarioBean != null) {
+                oRequest.getSession().setAttribute("user", oUsuarioBean);
+                Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
+                oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
+            } else {
+                //throw new Exception("ERROR Bad Authentication: Service level: get page: " + ob + " object");
+                oReplyBean = new ReplyBean(401, "Bad Authentication");
+            }
+        } catch (Exception ex) {
+            throw new Exception("ERROR: Service level: create method: " + ob + " object", ex);
+        } finally {
+            oConnectionPool.disposeConnection();
         }
         return oReplyBean;
     }
@@ -271,6 +277,5 @@ public class UsuarioService {
         }
         return oReplyBean;
     }
-
 
 }
