@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import net.daw.bean.ReplyBean;
 import net.daw.bean.ProductoBean;
@@ -12,6 +13,7 @@ import net.daw.constant.ConnectionConstants;
 import net.daw.dao.ProductoDao;
 import net.daw.factory.ConnectionFactory;
 import net.daw.helper.EncodingHelper;
+import net.daw.helper.ParameterCook;
 
 public class ProductoService {
 
@@ -33,8 +35,8 @@ public class ProductoService {
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            ProductoBean oProductoBean = oProductoDao.get(id);
-            Gson oGson = (new GsonBuilder()).create();
+            ProductoBean oProductoBean = oProductoDao.get(id, 1);
+            Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(oProductoBean));
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: get method: " + ob + " object", ex);
@@ -139,11 +141,12 @@ public class ProductoService {
         try {
             Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
             Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
+            HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            ArrayList<ProductoBean> alProductoBean = oProductoDao.getpage(iRpp, iPage);
-            Gson oGson = (new GsonBuilder()).create();
+            ArrayList<ProductoBean> alProductoBean = oProductoDao.getpage(iRpp, iPage,hmOrder,1);
+            Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(alProductoBean));
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: getpage method: " + ob + " object", ex);
@@ -155,4 +158,27 @@ public class ProductoService {
 
     }
 
+    public ReplyBean fill() throws Exception {
+        ReplyBean oReplyBean;
+        ConnectionInterface oConnectionPool = null;
+        Connection oConnection;
+        ArrayList<ProductoBean> productos = new ArrayList<>();
+        RellenarService oRellenarService = new RellenarService();
+        try {
+            Integer number = Integer.parseInt(oRequest.getParameter("number"));
+            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+            oConnection = oConnectionPool.newConnection();
+            ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
+            productos = oRellenarService.RellenarProducto(number);
+            for (ProductoBean producto : productos) {
+                oProductoDao.create(producto);
+            }
+            Gson oGson = new Gson();
+            oReplyBean = new ReplyBean(200, oGson.toJson("Productos creados: " + number));
+        } catch (Exception ex) {
+            oReplyBean = new ReplyBean(500,
+                    "ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+        }
+        return oReplyBean;
+    }
 }

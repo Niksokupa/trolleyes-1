@@ -6,10 +6,15 @@
 package net.daw.bean;
 
 import com.google.gson.annotations.Expose;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import net.daw.dao.TipoproductoDao;
+import net.daw.helper.EncodingHelper;
 
 /**
  *
- * @author a044531896d
+ * @author Jesus
  */
 public class ProductoBean {
 
@@ -29,14 +34,6 @@ public class ProductoBean {
     private int id_tipoProducto;
     @Expose(deserialize = false)
     private TipoproductoBean obj_tipoProducto;
-
-    public TipoproductoBean getObj_tipoProducto() {
-        return obj_tipoProducto;
-    }
-
-    public void setObj_tipoProducto(TipoproductoBean obj_tipoProducto) {
-        this.obj_tipoProducto = obj_tipoProducto;
-    }
 
     public int getId() {
         return id;
@@ -94,4 +91,67 @@ public class ProductoBean {
         this.id_tipoProducto = id_tipoProducto;
     }
 
+    public TipoproductoBean getObj_tipoProducto() {
+        return obj_tipoProducto;
+    }
+
+    public void setObj_tipoProducto(TipoproductoBean obj_tipoProducto) {
+        this.obj_tipoProducto = obj_tipoProducto;
+    }
+
+
+    
+    public ProductoBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception{
+        this.setId(oResultSet.getInt("id"));
+        this.setCodigo(oResultSet.getString("codigo"));
+        this.setDesc(oResultSet.getString("desc"));
+        this.setExistencias(oResultSet.getInt("existencias"));
+        this.setPrecio(oResultSet.getFloat("precio"));
+        this.setFoto(oResultSet.getString("foto"));
+        if(expand > 0){
+            TipoproductoDao oTipoproductoDao = new TipoproductoDao(oConnection, "tipoproducto");
+            this.setObj_tipoProducto(oTipoproductoDao.get(oResultSet.getInt("id_tipoProducto"), expand -1));
+        } else {
+            this.setId_tipoProducto(oResultSet.getInt("id_tipoProducto"));
+        }
+        return this;
+        
+    }
+    
+    public String getColumns(){
+        String strColumns="";
+        strColumns += "id,";
+        strColumns += "codigo,";
+        strColumns += "desc,";
+        strColumns += "existencias,";
+        strColumns += "precio,";
+        strColumns += "foto";
+        strColumns += "id_tipoProducto";
+        return strColumns;
+    }
+    
+    public String getValues(){
+        String strColumns = "";
+        strColumns += "null,";
+        strColumns += EncodingHelper.quotate(codigo) + ",";
+        strColumns += EncodingHelper.quotate(desc) + ",";
+        strColumns += existencias + ",";
+        strColumns += precio + ",";
+        strColumns += EncodingHelper.quotate(foto) + ",";
+        strColumns += id_tipoProducto;
+        return strColumns;
+    }
+    
+    public String getPairs(){
+        String strPairs = "";
+        strPairs += "id=" + id + ",";
+        strPairs += "codigo=" + EncodingHelper.quotate(codigo) + ",";
+        strPairs += "desc=" + EncodingHelper.quotate(desc) + ",";
+        strPairs += "existencias=" + existencias + ",";
+        strPairs += "precio=" + precio + ",";
+        strPairs += "foto=" + EncodingHelper.quotate(foto) + ",";
+        strPairs += "id_tipoProducto=" + id_tipoProducto;
+        strPairs += " WHERE id=" + id;
+        return strPairs;
+    }
 }
