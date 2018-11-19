@@ -35,8 +35,6 @@ public class LineaDao {
     public LineaBean get(int id, Integer expandProducto,Integer expandFactura) throws Exception {
         String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
         LineaBean oLineaBean;
-        ProductoBean oProductoBean;
-        FacturaBean oFacturaBean;
         
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
@@ -93,7 +91,32 @@ public class LineaDao {
                 res = oResultSet.getInt(1);
             }
         } catch (SQLException e) {
-            throw new Exception("Error en Dao get de " + ob, e);
+            throw new Exception("Error en Dao getcount de " + ob, e);
+        } finally {
+            if (oResultSet != null) {
+                oResultSet.close();
+            }
+            if (oPreparedStatement != null) {
+                oPreparedStatement.close();
+            }
+        }
+        return res;
+    }
+    
+        public int getcountspecific(int id) throws Exception {
+        String strSQL = "SELECT COUNT(id) FROM " + ob + " WHERE id_factura=?";
+        int res = 0;
+        ResultSet oResultSet = null;
+        PreparedStatement oPreparedStatement = null;
+        try {
+            oPreparedStatement = oConnection.prepareStatement(strSQL);
+            oPreparedStatement.setInt(1, id);
+            oResultSet = oPreparedStatement.executeQuery();
+            if (oResultSet.next()) {
+                res = oResultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error en Dao getcountspecific de " + ob, e);
         } finally {
             if (oResultSet != null) {
                 oResultSet.close();
@@ -106,7 +129,6 @@ public class LineaDao {
     }
 
     public LineaBean create(LineaBean oLineaBean) throws Exception {
-        //String strSQL = "INSERT INTO " + ob + " ("+ob+".id, "+ob+".cantidad, "+ob+".id_producto, "+ob+".id_factura) VALUES (NULL, ?, ?, ?); ";
         String strSQL = "INSERT INTO " + ob;
         strSQL += "(" + oLineaBean.getColumns() + ")";
         strSQL += " VALUES ";
@@ -137,7 +159,6 @@ public class LineaDao {
 
     public int update(LineaBean oLineaBean) throws Exception {
         int iResult = 0;
-        //String strSQL = "UPDATE " + ob + " SET " + ob + ".cantidad = ?, " + ob + ".id_producto = ?, " + ob + ".id_factura=? WHERE " + ob + ".id = ?;";
         String strSQL = "UPDATE " + ob + " SET ";
         strSQL += oLineaBean.getPairs();
         PreparedStatement oPreparedStatement = null;
