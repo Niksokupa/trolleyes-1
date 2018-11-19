@@ -134,6 +134,9 @@ public class ServiceFactory {
                     case "getpage":
                         oReplyBean = oLineaService.getpage();
                         break;
+                    case "getpagespecific":
+                        oReplyBean = oLineaService.getpagespecific();
+                        break;
                     default:
                         oReplyBean = new ReplyBean(500, "Operation doesn't exist");
                         break;
