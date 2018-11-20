@@ -91,6 +91,28 @@ public class FacturaService {
 		return oReplyBean;
 
 	}
+        
+	public ReplyBean getcountspecific() throws Exception {
+		ReplyBean oReplyBean;
+		ConnectionInterface oConnectionPool = null;
+		Connection oConnection;
+		try {
+                        Integer id = Integer.parseInt(oRequest.getParameter("id"));
+			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+			oConnection = oConnectionPool.newConnection();
+			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
+			int registros = oFacturaDao.getcountspecific(id);
+			Gson oGson = new Gson();
+			oReplyBean = new ReplyBean(200, oGson.toJson(registros));
+		} catch (Exception ex) {
+			throw new Exception("ERROR: Service level: getcount method: " + ob + " object", ex);
+		} finally {
+			oConnectionPool.disposeConnection();
+		}
+
+		return oReplyBean;
+
+	}
 
 	public ReplyBean create() throws Exception {
 		ReplyBean oReplyBean;
@@ -145,10 +167,36 @@ public class FacturaService {
 			Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
 			Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
                         HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
+
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
 			ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpage(iRpp, iPage, hmOrder,1);
+			Gson oGson = new Gson();
+			oReplyBean = new ReplyBean(200, oGson.toJson(alFacturaBean));
+		} catch (Exception ex) {
+			throw new Exception("ERROR: Service level: getpage method: " + ob + " object", ex);
+		} finally {
+			oConnectionPool.disposeConnection();
+		}
+
+		return oReplyBean;
+
+	}
+        
+	public ReplyBean getpagespecific() throws Exception {
+		ReplyBean oReplyBean;
+		ConnectionInterface oConnectionPool = null;
+		Connection oConnection;
+		try {
+			Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
+			Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
+                        HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
+                                                Integer id = Integer.parseInt(oRequest.getParameter("id"));
+			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+			oConnection = oConnectionPool.newConnection();
+			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
+			ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpagespecific(iRpp, iPage, hmOrder, id, 1);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(alFacturaBean));
 		} catch (Exception ex) {

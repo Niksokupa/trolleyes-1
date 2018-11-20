@@ -102,8 +102,14 @@ public class ServiceFactory {
                     case "getcount":
                         oReplyBean = oFacturaService.getcount();
                         break;
+                    case "getcountspecific":
+                        oReplyBean = oFacturaService.getcountspecific();
+                        break;
                     case "getpage":
                         oReplyBean = oFacturaService.getpage();
+                        break;
+                    case "getpagespecific":
+                        oReplyBean = oFacturaService.getpagespecific();
                         break;
                     default:
                         oReplyBean = new ReplyBean(500, "Operation doesn't exist");
