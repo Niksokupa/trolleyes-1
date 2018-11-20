@@ -211,7 +211,8 @@ public class FacturaDao {
 	}
         
 	public ArrayList<FacturaBean> getpagespecific(int iRpp, int iPage, HashMap<String, String> hmOrder, int id, Integer expand) throws Exception {
-		String strSQL = "SELECT * FROM " + ob + " WHERE id_usuario=" + id;
+		boolean vacio = false;
+                String strSQL = "SELECT * FROM " + ob + " WHERE id_usuario=" + id;
                 strSQL += SqlBuilder.buildSqlOrder(hmOrder);
                 ArrayList<FacturaBean> alFacturaBean;
 		if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
@@ -226,7 +227,23 @@ public class FacturaDao {
 					FacturaBean oFacturaBean = new FacturaBean();
                                         oFacturaBean.fill(oResultSet, oConnection, expand);
 					alFacturaBean.add(oFacturaBean);
+                                        vacio = true;
 				}
+                                /*
+                                 *Si no tiene facturas me devuelve al menos el pojo de usuario
+                                 *porque quiero mostrar sus datos igualmente. 
+                                 */
+                                if(!vacio){
+                                    alFacturaBean = new ArrayList<FacturaBean>();
+                                    FacturaBean oFacturaBean = new FacturaBean();
+                                    oFacturaBean.setFecha(null);
+                                    oFacturaBean.setId(0);
+                                    oFacturaBean.setIva(0);
+                                    oFacturaBean.setNumLineas(0);
+                                    UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
+                                    oFacturaBean.setObj_usuario(oUsuarioDao.get(id, 0));
+                                    alFacturaBean.add(oFacturaBean);
+                                }
 			} catch (SQLException e) {
 				throw new Exception("Error en Dao getpage de " + ob, e);
 			} finally {
