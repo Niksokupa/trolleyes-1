@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import net.daw.dao.LineaDao;
 import net.daw.dao.UsuarioDao;
 import net.daw.helper.EncodingHelper;
 
@@ -25,6 +26,15 @@ public class FacturaBean {
     private Date fecha;
     private double iva;
     private UsuarioBean obj_usuario;
+    private int numLineas;
+
+    public int getNumLineas() {
+        return numLineas;
+    }
+
+    public void setNumLineas(int numLineas) {
+        this.numLineas = numLineas;
+    }
 
     public int getId() {
         return id;
@@ -62,6 +72,8 @@ public class FacturaBean {
         this.setId(oResultSet.getInt("id"));
         this.setFecha(oResultSet.getDate("fecha"));
         this.setIva(oResultSet.getDouble("iva"));
+        LineaDao oLineaDao = new LineaDao(oConnection, "linea");
+        this.setNumLineas(oLineaDao.getcountspecific(this.getId()));
         if(expand > 0){
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
             this.setObj_usuario(oUsuarioDao.get(oResultSet.getInt("id_usuario"), expand));
