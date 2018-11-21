@@ -6,6 +6,7 @@
 package net.daw.bean;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import net.daw.dao.FacturaDao;
@@ -19,6 +20,24 @@ public class LineaBean {
 
     private int id;
     private int cantidad;
+    private int id_producto;
+    private int id_factura;
+
+    public int getId_producto() {
+        return id_producto;
+    }
+
+    public void setId_producto(int id_producto) {
+        this.id_producto = id_producto;
+    }
+
+    public int getId_factura() {
+        return id_factura;
+    }
+
+    public void setId_factura(int id_factura) {
+        this.id_factura = id_factura;
+    }
     private ProductoBean obj_producto;
     private FacturaBean obj_factura;
 
@@ -82,8 +101,8 @@ public class LineaBean {
         String strColumns = "";
         strColumns += "null,";
         strColumns += cantidad + ",";
-        strColumns += obj_producto.getId() + ",";
-        strColumns += obj_factura.getId();
+        strColumns += id_producto + ",";
+        strColumns += id_factura;
         return strColumns;
     }
 
@@ -91,8 +110,9 @@ public class LineaBean {
         String strPairs = "";
         strPairs += "id=" + id + ",";
         strPairs += "cantidad=" + cantidad + ",";
-        strPairs += "id_producto=" + obj_producto.getId() + ",";
-        strPairs += "id_factura=" + obj_factura.getId();
+
+        strPairs += "id_producto=" + id_producto + ",";
+        strPairs += "id_factura=" + id_factura;
         strPairs += " WHERE id=" + id;
         return strPairs;
     }
