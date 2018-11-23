@@ -130,7 +130,7 @@ public class FacturaDao {
                 String strSQL = "INSERT INTO " + ob;
                 strSQL += "(" + oFacturaBean.getColumns() + ")";
                 strSQL += " VALUES ";
-                strSQL += "(" + oFacturaBean.getPairs() + ")";
+                strSQL += "(" + oFacturaBean.getValues()+ ")";
 		ResultSet oResultSet = null;
 		PreparedStatement oPreparedStatement = null;
 		try {

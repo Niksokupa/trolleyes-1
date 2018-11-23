@@ -26,8 +26,17 @@ public class FacturaBean {
     private Date fecha;
     private double iva;
     private UsuarioBean obj_usuario;
+    private int id_usuario;
     private int numLineas;
 
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+    
     public int getNumLineas() {
         return numLineas;
     }
@@ -91,31 +100,41 @@ public class FacturaBean {
     }
     
     public String getValues(){
+        //Getting the default zone id
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+
+        //Converting the date to Instant
+        Instant instant = fecha.toInstant();
+
+        //Converting the Date to LocalDate
+        LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
+
+        
         String strColumns = "";
         strColumns += "null,";
-        strColumns += fecha + ",";
+        strColumns += EncodingHelper.quotate(localDate.toString()) + ",";
         strColumns += iva + ",";
-        strColumns += getObj_usuario().getId() + ",";
+        strColumns += id_usuario;
         return strColumns;
     }
     
-    public String getPairs(){
-		
-	//Getting the default zone id
-	ZoneId defaultZoneId = ZoneId.systemDefault();
-		
-	//Converting the date to Instant
-	Instant instant = fecha.toInstant();
-		
-	//Converting the Date to LocalDate
-	LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
-	System.out.println("Local Date is: "+localDate);
-        
-        String strPairs ="";
+    public String getPairs() {
+
+        //Getting the default zone id
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+
+        //Converting the date to Instant
+        Instant instant = fecha.toInstant();
+
+        //Converting the Date to LocalDate
+        LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
+
+
+        String strPairs = "";
         strPairs += "id=" + id + ",";
         strPairs += "fecha=" + EncodingHelper.quotate(localDate.toString()) + ",";
         strPairs += "iva=" + iva + ",";
-        strPairs += "id_usuario=" + obj_usuario.getId();
+        strPairs += "id_usuario=" + id_usuario;
         strPairs += " WHERE id=" + id;
         return strPairs;
     }
