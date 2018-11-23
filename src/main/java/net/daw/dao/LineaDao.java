@@ -32,10 +32,10 @@ public class LineaDao {
         this.ob = ob;
     }
 
-    public LineaBean get(int id, Integer expandProducto,Integer expandFactura) throws Exception {
+    public LineaBean get(int id, Integer expandProducto, Integer expandFactura) throws Exception {
         String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
         LineaBean oLineaBean;
-        
+
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {
@@ -102,8 +102,8 @@ public class LineaDao {
         }
         return res;
     }
-    
-        public int getcountspecific(int id) throws Exception {
+
+    public int getcountspecific(int id) throws Exception {
         String strSQL = "SELECT COUNT(id) FROM " + ob + " WHERE id_factura=?";
         int res = 0;
         ResultSet oResultSet = null;
@@ -176,7 +176,7 @@ public class LineaDao {
         return iResult;
     }
 
-    public ArrayList<LineaBean> getpage(int iRpp, int iPage, HashMap<String, String>hmOrder, Integer expandProducto,Integer expandFactura) throws Exception {
+    public ArrayList<LineaBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder, Integer expandProducto, Integer expandFactura) throws Exception {
         String strSQL = "SELECT * FROM " + ob;
         strSQL += SqlBuilder.buildSqlOrder(hmOrder);
         ArrayList<LineaBean> alLineaBean;
@@ -209,8 +209,9 @@ public class LineaDao {
         return alLineaBean;
 
     }
-    
-    public ArrayList<LineaBean> getpagespecific(int iRpp, int iPage, HashMap<String, String>hmOrder, int id, Integer expandProducto,Integer expandFactura) throws Exception {
+
+    public ArrayList<LineaBean> getpagespecific(int iRpp, int iPage, HashMap<String, String> hmOrder, int id, Integer expandProducto, Integer expandFactura) throws Exception {
+        boolean vacio = false;
         String strSQL = "SELECT * FROM " + ob + " WHERE id_factura=?";
         strSQL += SqlBuilder.buildSqlOrder(hmOrder);
         ArrayList<LineaBean> alLineaBean;
@@ -227,7 +228,22 @@ public class LineaDao {
                     LineaBean oLineaBean = new LineaBean();
                     oLineaBean.fill(oResultSet, oConnection, expandProducto, expandFactura);
                     alLineaBean.add(oLineaBean);
+                    vacio = true;
                 }
+                /*
+                    *Si no tiene facturas me devuelve al menos el pojo de usuario
+                    *porque quiero mostrar sus datos igualmente. 
+                 */
+                if (!vacio) {
+                    alLineaBean = new ArrayList<LineaBean>();
+                    LineaBean oLineaBean = new LineaBean();
+                    oLineaBean.setCantidad(0);
+                    oLineaBean.setObj_producto(null);
+                    FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
+                    oLineaBean.setObj_factura(oFacturaDao.get(id, 1));
+                    alLineaBean.add(oLineaBean);     
+                }
+                
             } catch (SQLException e) {
                 throw new Exception("Error en Dao getpage de " + ob, e);
             } finally {
