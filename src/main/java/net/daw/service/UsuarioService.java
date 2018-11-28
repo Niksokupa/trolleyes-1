@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import net.daw.bean.CarritoBean;
 import net.daw.bean.ReplyBean;
 import net.daw.bean.UsuarioBean;
 import net.daw.connection.publicinterface.ConnectionInterface;
@@ -247,6 +248,7 @@ public class UsuarioService {
             UsuarioBean oUsuarioBean = oUsuarioDao.login(strLogin, strPassword);
             if (oUsuarioBean != null) {
                 oRequest.getSession().setAttribute("user", oUsuarioBean);
+                oRequest.getSession().setAttribute("productos", "");
                 Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
                 oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
             } else {
@@ -254,7 +256,7 @@ public class UsuarioService {
                 oReplyBean = new ReplyBean(401, "Bad Authentication");
             }
         } catch (Exception ex) {
-            throw new Exception("ERROR: Service level: create method: " + ob + " object", ex);
+            throw new Exception("ERROR: Service level: login method: " + ob + " object", ex);
         } finally {
             oConnectionPool.disposeConnection();
         }
