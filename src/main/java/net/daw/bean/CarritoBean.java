@@ -5,16 +5,13 @@
  */
 package net.daw.bean;
 
-import com.google.gson.annotations.Expose;
 
 /**
  *
  * @author a044525499y
  */
 public class CarritoBean {
-    @Expose
     private ProductoBean obj_producto;
-    @Expose
     private int cantidad;
 
     public ProductoBean getObj_producto() {
