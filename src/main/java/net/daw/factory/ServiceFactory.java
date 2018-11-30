@@ -36,6 +36,9 @@ public class ServiceFactory {
                     case "reduce":
                         oReplyBean = oCarritoService.reduce();
                         break;
+                    case "remove":
+                        oReplyBean = oCarritoService.remove();
+                        break;
                     case "buy":
                         oReplyBean = oCarritoService.buy();
                         break;

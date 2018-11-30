@@ -8,8 +8,10 @@ package net.daw.bean;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import net.daw.dao.LineaDao;
@@ -79,7 +81,9 @@ public class FacturaBean {
 
     public FacturaBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception{
         this.setId(oResultSet.getInt("id"));
-        this.setFecha(oResultSet.getDate("fecha"));
+        Timestamp timestamp = oResultSet.getTimestamp("fecha");
+        Date date = new java.util.Date(timestamp.getTime());
+        this.setFecha(date);
         this.setIva(oResultSet.getDouble("iva"));
         LineaDao oLineaDao = new LineaDao(oConnection, "linea");
         this.setNumLineas(oLineaDao.getcountspecific(this.getId()));
@@ -107,12 +111,12 @@ public class FacturaBean {
         Instant instant = fecha.toInstant();
 
         //Converting the Date to LocalDate
-        LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
+        LocalDateTime localDateTime = instant.atZone(defaultZoneId).toLocalDateTime();
 
         
         String strColumns = "";
         strColumns += "null,";
-        strColumns += EncodingHelper.quotate(localDate.toString()) + ",";
+        strColumns += EncodingHelper.quotate(localDateTime.toString()) + ",";
         strColumns += iva + ",";
         strColumns += id_usuario;
         return strColumns;
@@ -127,12 +131,12 @@ public class FacturaBean {
         Instant instant = fecha.toInstant();
 
         //Converting the Date to LocalDate
-        LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
+        LocalDateTime localDateTime = instant.atZone(defaultZoneId).toLocalDateTime();
 
 
         String strPairs = "";
         strPairs += "id=" + id + ",";
-        strPairs += "fecha=" + EncodingHelper.quotate(localDate.toString()) + ",";
+        strPairs += "fecha=" + EncodingHelper.quotate(localDateTime.toString()) + ",";
         strPairs += "iva=" + iva + ",";
         strPairs += "id_usuario=" + id_usuario;
         strPairs += " WHERE id=" + id;
