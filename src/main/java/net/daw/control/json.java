@@ -67,30 +67,7 @@ public class json extends HttpServlet {
         String strJson = "";
         JsonHelper json = new JsonHelper();
 
-//        Prueba subida imágenes             //
-        String name = "";
-        HashMap<String, String> hash = new HashMap<>();
 
-        if (ServletFileUpload.isMultipartContent(request)) {
-            try {
-                List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
-                for (FileItem item : multiparts) {
-                    if (!item.isFormField()) {
-                        name = new File(item.getName()).getName();
-                        item.write(new File(".//..//webapps//images//" + name));
-
-                    } else {
-                        hash.put(item.getFieldName(), item.getString());
-                    }
-                }
-            } catch (Exception ex) {
-                PrintWriter out = response.getWriter();
-                out.println(ex.getMessage());
-                ex.printStackTrace(out);
-            }
-        }
-
-        //////////////////////////////////////////////////////////////////////
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception ex) {
