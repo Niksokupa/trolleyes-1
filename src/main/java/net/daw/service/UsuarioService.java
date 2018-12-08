@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
-import net.daw.bean.CarritoBean;
 import net.daw.bean.ReplyBean;
 import net.daw.bean.UsuarioBean;
 import net.daw.connection.publicinterface.ConnectionInterface;
@@ -276,6 +275,30 @@ public class UsuarioService {
             oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
         } else {
             oReplyBean = new ReplyBean(401, "No active session");
+        }
+        return oReplyBean;
+    }
+
+    public ReplyBean updatePass() throws Exception {
+        Gson oGson = new Gson();
+        ReplyBean oReplyBean = null;
+        ConnectionInterface oConnectionPool = null;
+        Connection oConnection;
+        UsuarioBean oUsuarioBeanSession;
+        oUsuarioBeanSession = (UsuarioBean) oRequest.getSession().getAttribute("user");
+        String lastPass = oRequest.getParameter("lastpass");
+        String newPass = oRequest.getParameter("newpass");
+        if (oUsuarioBeanSession != null) {
+            try {
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
+                oUsuarioDao.updatePass(lastPass, newPass, oUsuarioBeanSession);
+            } catch (Exception e) {
+                oReplyBean = new ReplyBean(500, e.getMessage());
+            }
+        } else {
+            oReplyBean = new ReplyBean(200, oGson.toJson("Pass updated"));
         }
         return oReplyBean;
     }

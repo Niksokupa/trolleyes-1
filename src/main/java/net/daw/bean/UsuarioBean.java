@@ -152,6 +152,9 @@ public class UsuarioBean {
     }
 
     public String getValues() {
+        if (id_tipoUsuario == 0) {
+            id_tipoUsuario = obj_tipoUsuario.getId();
+        }
         String strColumns = "";
         strColumns += "null,";
         strColumns += EncodingHelper.quotate(dni) + ",";
@@ -165,6 +168,9 @@ public class UsuarioBean {
     }
 
     public String getPairs() {
+        if (id_tipoUsuario == 0) {
+            id_tipoUsuario = obj_tipoUsuario.getId();
+        }
         String strPairs = "";
         strPairs += "id=" + id + ",";
         strPairs += "dni=" + EncodingHelper.quotate(dni) + ",";

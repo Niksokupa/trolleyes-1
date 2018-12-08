@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 import net.daw.bean.UsuarioBean;
 import net.daw.helper.SqlBuilder;
 
@@ -212,6 +211,39 @@ public class UsuarioDao {
             }
         }
         return oUsuarioBean;
+    }
+
+    public void updatePass(String lastPass, String newPass, UsuarioBean usuarioSession) throws Exception {
+        String strSQL = "SELECT * FROM " + ob + " WHERE id=" + usuarioSession.getId();
+        UsuarioBean oUsuarioBean = null;
+        ResultSet oResultSet = null;
+        PreparedStatement oPreparedStatement = null;
+        try {
+            oPreparedStatement = oConnection.prepareStatement(strSQL);
+            oResultSet = oPreparedStatement.executeQuery();
+            while (oResultSet.next()) {
+                oUsuarioBean = new UsuarioBean();
+                oUsuarioBean.fill(oResultSet, oConnection, 1);
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        } finally {
+            if (oResultSet != null) {
+                oResultSet.close();
+            }
+            if (oPreparedStatement != null) {
+                oPreparedStatement.close();
+            }
+        }
+        if (!lastPass.equals(oUsuarioBean.getPass())) {
+            throw new Exception("La contraseña antigua no coincide.");
+        } else if (newPass.equals(usuarioSession.getPass())) {
+            throw new Exception("Pass nueva igual a pass antigua");
+        } else {
+            usuarioSession.setPass(newPass);
+            update(usuarioSession);
+        }
     }
 
 }
