@@ -203,7 +203,7 @@ public class ProductoService {
                 for (FileItem item : multiparts) {
                     if (!item.isFormField()) {
                         name = new File(item.getName()).getName();
-                        item.write(new File(".//..//webapps//ROOT//images//" + name));
+                        item.write(new File(".//..//webapps//ROOT//imagenes//" + name));
                     } else {
                         hash.put(item.getFieldName(), item.getString());
                     }
