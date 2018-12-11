@@ -6,6 +6,7 @@
 package net.daw.service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,7 +103,7 @@ public class FacturaService {
 			oConnection = oConnectionPool.newConnection();
 			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
 			int registros = oFacturaDao.getcountspecific(id);
-			Gson oGson = new Gson();
+			Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
 			oReplyBean = new ReplyBean(200, oGson.toJson(registros));
 		} catch (Exception ex) {
 			throw new Exception("ERROR: Service level: getcount method: " + ob + " object", ex);
@@ -197,7 +198,7 @@ public class FacturaService {
 			oConnection = oConnectionPool.newConnection();
 			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
 			ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpagespecific(iRpp, iPage, hmOrder, id, 1);
-			Gson oGson = new Gson();
+			Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
 			oReplyBean = new ReplyBean(200, oGson.toJson(alFacturaBean));
 		} catch (Exception ex) {
 			throw new Exception("ERROR: Service level: getpage method: " + ob + " object", ex);

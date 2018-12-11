@@ -5,6 +5,7 @@
  */
 package net.daw.bean;
 
+import com.google.gson.annotations.Expose;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,11 +25,17 @@ import net.daw.helper.EncodingHelper;
  */
 public class FacturaBean {
 
+    @Expose
     private int id;
+    @Expose
     private Date fecha;
+    @Expose
     private double iva;
+    @Expose
     private UsuarioBean obj_usuario;
+    @Expose
     private int id_usuario;
+    @Expose
     private int numLineas;
 
     public int getId_usuario() {
