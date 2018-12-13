@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import net.daw.bean.ReplyBean;
-import net.daw.bean.UsuarioBean;
 import net.daw.bean.publicBeanInterface.BeanInterface;
 import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.constant.ConnectionConstants;
@@ -106,7 +105,7 @@ public class GenericServiceImplementation implements ServiceInterface {
         try {
             String strJsonFromClient = oRequest.getParameter("json");
             Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
-            BeanInterface oBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
+            BeanInterface oBean = oGson.fromJson(strJsonFromClient, BeanInterface.class);
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             DaoInterface oDao = DaoFactory.getDao(oConnection, ob);
@@ -129,7 +128,7 @@ public class GenericServiceImplementation implements ServiceInterface {
         try {
             String strJsonFromClient = oRequest.getParameter("json");
             Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
-            BeanInterface oBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
+            BeanInterface oBean = oGson.fromJson(strJsonFromClient, BeanInterface.class);
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             DaoInterface oDao = DaoFactory.getDao(oConnection, ob);
