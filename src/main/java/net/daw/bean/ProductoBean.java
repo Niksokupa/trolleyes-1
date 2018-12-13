@@ -8,18 +8,18 @@ package net.daw.bean;
 import com.google.gson.annotations.Expose;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import net.daw.dao.TipoproductoDao;
+import net.daw.bean.genericBeanInterface.GenericBeanImplementation;
+import net.daw.bean.publicBeanInterface.BeanInterface;
+import net.daw.dao.publicDaoInterface.DaoInterface;
+import net.daw.factory.DaoFactory;
 import net.daw.helper.EncodingHelper;
 
 /**
  *
- * @author Jesus
+ * @author Ramón
  */
-public class ProductoBean {
+public class ProductoBean extends GenericBeanImplementation implements BeanInterface {
 
-    @Expose
-    private int id;
     @Expose
     private String codigo;
     @Expose
@@ -35,13 +35,6 @@ public class ProductoBean {
     @Expose(deserialize = false)
     private TipoproductoBean obj_tipoProducto;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getCodigo() {
         return codigo;
@@ -101,7 +94,8 @@ public class ProductoBean {
 
 
     
-    public ProductoBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception{
+    @Override
+    public ProductoBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception{
         this.setId(oResultSet.getInt("id"));
         this.setCodigo(oResultSet.getString("codigo"));
         this.setDesc(oResultSet.getString("desc"));
@@ -109,8 +103,8 @@ public class ProductoBean {
         this.setPrecio(oResultSet.getFloat("precio"));
         this.setFoto(oResultSet.getString("foto"));
         if(expand > 0){
-            TipoproductoDao oTipoproductoDao = new TipoproductoDao(oConnection, "tipoproducto");
-            this.setObj_tipoProducto(oTipoproductoDao.get(oResultSet.getInt("id_tipoProducto"), expand -1));
+            DaoInterface oTipoproductoDao = DaoFactory.getDao(oConnection, "tipoproducto");
+            this.setObj_tipoProducto((TipoproductoBean) oTipoproductoDao.get(oResultSet.getInt("id_tipoProducto"), expand -1));
         } else {
             this.setId_tipoProducto(oResultSet.getInt("id_tipoProducto"));
         }
@@ -118,6 +112,7 @@ public class ProductoBean {
         
     }
     
+    @Override
     public String getColumns(){
         String strColumns="";
         strColumns += "id,";
@@ -130,6 +125,7 @@ public class ProductoBean {
         return strColumns;
     }
     
+    @Override
     public String getValues(){
         String strColumns = "";
         strColumns += "null,";
@@ -142,6 +138,7 @@ public class ProductoBean {
         return strColumns;
     }
     
+    @Override
     public String getPairs(){
         String strPairs = "";
         strPairs += "id=" + id + ",";

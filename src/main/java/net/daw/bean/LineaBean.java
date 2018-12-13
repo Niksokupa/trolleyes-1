@@ -5,23 +5,33 @@
  */
 package net.daw.bean;
 
+import com.google.gson.annotations.Expose;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import net.daw.bean.genericBeanInterface.GenericBeanImplementation;
+import net.daw.bean.publicBeanInterface.BeanInterface;
 import net.daw.dao.FacturaDao;
 import net.daw.dao.ProductoDao;
+import net.daw.dao.publicDaoInterface.DaoInterface;
+import net.daw.factory.DaoFactory;
 
 /**
  *
- * @author Jesus
+ * @author Ramón
  */
-public class LineaBean {
+public class LineaBean extends GenericBeanImplementation implements BeanInterface {
 
-    private int id;
+    @Expose
     private int cantidad;
+    @Expose
     private int id_producto;
+    @Expose
     private int id_factura;
+    @Expose
+    private ProductoBean obj_producto;
+    @Expose
+    private FacturaBean obj_factura;
 
     public int getId_producto() {
         return id_producto;
@@ -37,16 +47,6 @@ public class LineaBean {
 
     public void setId_factura(int id_factura) {
         this.id_factura = id_factura;
-    }
-    private ProductoBean obj_producto;
-    private FacturaBean obj_factura;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getCantidad() {
@@ -73,21 +73,21 @@ public class LineaBean {
         this.obj_factura = obj_factura;
     }
 
-    public LineaBean fill(ResultSet oResultSet, Connection oConnection, Integer expandProducto, Integer expandFactura) throws SQLException, Exception {
+    @Override
+    public LineaBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception {
         this.setId(oResultSet.getInt("id"));
         this.setCantidad(oResultSet.getInt("cantidad"));
-        if (expandProducto > 0) {
-            ProductoDao oProductoDao = new ProductoDao(oConnection, "producto");
-            this.setObj_producto(oProductoDao.get(oResultSet.getInt("id_producto"), expandProducto));
-        }
-        if (expandFactura > 0) {
-            FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
-            this.setObj_factura(oFacturaDao.get(oResultSet.getInt("id_factura"), expandFactura));
-        }
+        if (expand > 0) {
+            DaoInterface oProductoDao = DaoFactory.getDao(oConnection, "producto");
+            this.setObj_producto((ProductoBean) oProductoDao.get(oResultSet.getInt("id_producto"), expand--));
 
+            DaoInterface oFacturaDao = DaoFactory.getDao(oConnection, "factura");
+            this.setObj_factura((FacturaBean) oFacturaDao.get(oResultSet.getInt("id_factura"), expand--));
+        }
         return this;
     }
 
+    @Override
     public String getColumns() {
         String strColumns = "";
         strColumns += "id,";
@@ -97,6 +97,7 @@ public class LineaBean {
         return strColumns;
     }
 
+    @Override
     public String getValues() {
         String strColumns = "";
         strColumns += "null,";
@@ -106,6 +107,7 @@ public class LineaBean {
         return strColumns;
     }
 
+    @Override
     public String getPairs() {
         String strPairs = "";
         strPairs += "id=" + id + ",";

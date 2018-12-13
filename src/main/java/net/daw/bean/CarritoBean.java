@@ -5,13 +5,19 @@
  */
 package net.daw.bean;
 
+import com.google.gson.annotations.Expose;
+import net.daw.bean.genericBeanInterface.GenericBeanImplementation;
+import net.daw.bean.publicBeanInterface.BeanInterface;
+
 
 /**
  *
  * @author a044525499y
  */
-public class CarritoBean {
+public class CarritoBean extends GenericBeanImplementation implements BeanInterface {
+    @Expose
     private ProductoBean obj_producto;
+    @Expose
     private int cantidad;
 
     public ProductoBean getObj_producto() {

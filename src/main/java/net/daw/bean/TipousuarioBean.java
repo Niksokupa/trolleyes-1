@@ -4,22 +4,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 import com.google.gson.annotations.Expose;
+import net.daw.bean.genericBeanInterface.GenericBeanImplementation;
+import net.daw.bean.publicBeanInterface.BeanInterface;
 import net.daw.helper.EncodingHelper;
 
-public class TipousuarioBean {
+public class TipousuarioBean extends GenericBeanImplementation implements BeanInterface{
 
-    @Expose
-    private int id;
     @Expose
     private String desc;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getDesc() {
         return desc;
@@ -29,12 +21,14 @@ public class TipousuarioBean {
         this.desc = desc;
     }
 
+    @Override
     public TipousuarioBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception {
         this.setId(oResultSet.getInt("id"));
         this.setDesc(oResultSet.getString("desc"));
         return this;
     }
 
+    @Override
     public String getColumns() {
         String strColumns = "";
         strColumns += "id,";
@@ -42,6 +36,7 @@ public class TipousuarioBean {
         return strColumns;
     }
 
+    @Override
     public String getValues() {
         String strColumns = "";
         strColumns += "null,";
@@ -49,6 +44,7 @@ public class TipousuarioBean {
         return strColumns;
     }
 
+    @Override
     public String getPairs() {
         String strPairs = "";
         strPairs += "id=" + id + ",";

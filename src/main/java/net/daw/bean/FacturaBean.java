@@ -5,30 +5,39 @@
  */
 package net.daw.bean;
 
+import com.google.gson.annotations.Expose;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import net.daw.bean.genericBeanInterface.GenericBeanImplementation;
+import net.daw.bean.publicBeanInterface.BeanInterface;
 import net.daw.dao.LineaDao;
 import net.daw.dao.UsuarioDao;
+import net.daw.dao.publicDaoInterface.DaoInterface;
+import net.daw.factory.DaoFactory;
 import net.daw.helper.EncodingHelper;
 
 /**
  *
- * @author Jesus
+ * @author Ramón
  */
-public class FacturaBean {
+public class FacturaBean extends GenericBeanImplementation implements BeanInterface{
 
-    private int id;
+
+    @Expose
     private Date fecha;
+    @Expose
     private double iva;
+    @Expose
     private UsuarioBean obj_usuario;
+    @Expose
     private int id_usuario;
+    @Expose
     private int numLineas;
 
     public int getId_usuario() {
@@ -45,14 +54,6 @@ public class FacturaBean {
 
     public void setNumLineas(int numLineas) {
         this.numLineas = numLineas;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Date getFecha() {
@@ -79,6 +80,7 @@ public class FacturaBean {
         this.obj_usuario = obj_usuario;
     }
 
+    @Override
     public FacturaBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception{
         this.setId(oResultSet.getInt("id"));
         Timestamp timestamp = oResultSet.getTimestamp("fecha");
@@ -88,12 +90,13 @@ public class FacturaBean {
         LineaDao oLineaDao = new LineaDao(oConnection, "linea");
         this.setNumLineas(oLineaDao.getcountspecific(this.getId()));
         if(expand > 0){
-            UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
-            this.setObj_usuario(oUsuarioDao.get(oResultSet.getInt("id_usuario"), expand));
+            DaoInterface oUsuarioDao = DaoFactory.getDao(oConnection, "usuario");
+            this.setObj_usuario((UsuarioBean) oUsuarioDao.get(oResultSet.getInt("id_usuario"), expand));
         }
         return this;
     }
     
+    @Override
     public String getColumns(){
         String strColumns = "";
         strColumns += "id,";
@@ -103,6 +106,7 @@ public class FacturaBean {
         return strColumns;
     }
     
+    @Override
     public String getValues(){
         //Getting the default zone id
         ZoneId defaultZoneId = ZoneId.systemDefault();
@@ -122,6 +126,7 @@ public class FacturaBean {
         return strColumns;
     }
     
+    @Override
     public String getPairs() {
 
         //Getting the default zone id

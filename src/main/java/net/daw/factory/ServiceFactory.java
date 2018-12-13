@@ -18,7 +18,7 @@ public class ServiceFactory {
 
         String ob = oRequest.getParameter("ob");
         String op = oRequest.getParameter("op");
-        ReplyBean oReplyBean = null;
+        ReplyBean oReplyBean;
 
         switch (ob) {
             case "carrito":

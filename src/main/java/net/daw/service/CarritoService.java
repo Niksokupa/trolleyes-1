@@ -22,30 +22,24 @@ import net.daw.dao.LineaDao;
 import net.daw.dao.ProductoDao;
 import net.daw.factory.ConnectionFactory;
 import net.daw.helper.ValidateData;
+import net.daw.service.genericServiceImplementation.GenericServiceImplementation;
+import net.daw.service.publicServiceInterface.ServiceInterface;
 
 /**
  *
  * @author a073597589g
  */
-public class CarritoService implements Serializable {
-
-    HttpServletRequest oRequest;
-    String ob = null;
+public class CarritoService extends GenericServiceImplementation implements ServiceInterface {
 
     public CarritoService(HttpServletRequest oRequest) {
-        super();
-        this.oRequest = oRequest;
-        ob = oRequest.getParameter("ob");
-    }
+        super(oRequest);
 
-    protected Boolean checkPermission(String strMethodName) {
-        UsuarioBean oUsuarioBean = (UsuarioBean) oRequest.getSession().getAttribute("user");
-        return oUsuarioBean != null;
+        ob = oRequest.getParameter("ob");
     }
 
     public ReplyBean add() throws Exception {
         ReplyBean oReplyBean;
-        if (checkPermission("add")) {
+
             ConnectionInterface oConnectionPool = null;
             Connection oConnection;
             Gson oGson = new Gson();
@@ -60,7 +54,7 @@ public class CarritoService implements Serializable {
                         Integer cantidad = Integer.parseInt(strCantidad);
                         ArrayList<CarritoBean> alCarrito = (ArrayList<CarritoBean>) oRequest.getSession().getAttribute("carrito");
                         ProductoDao oProductoDao = new ProductoDao(oConnection, "producto");
-                        ProductoBean oProductoBean = oProductoDao.get(id_producto, 1);
+                        ProductoBean oProductoBean = (ProductoBean) oProductoDao.get(id_producto, 1);
                         if (oProductoBean != null) {
                             if (alCarrito != null) {
                                 Boolean exists = false;
@@ -74,7 +68,7 @@ public class CarritoService implements Serializable {
                                 if (!exists) {
                                     CarritoBean oCarritoBean = new CarritoBean();
                                     oProductoDao = new ProductoDao(oConnection, "producto");
-                                    oProductoBean = oProductoDao.get(id_producto, 1);
+                                    oProductoBean = (ProductoBean) oProductoDao.get(id_producto, 1);
                                     oCarritoBean.setCantidad(cantidad);
                                     oCarritoBean.setObj_producto(oProductoBean);
                                     alCarrito.add(oCarritoBean);
@@ -84,7 +78,7 @@ public class CarritoService implements Serializable {
                                 ArrayList<CarritoBean> newAlCarrito = new ArrayList<>();
                                 CarritoBean oCarritoBean = new CarritoBean();
                                 oProductoDao = new ProductoDao(oConnection, "producto");
-                                oProductoBean = oProductoDao.get(id_producto, 1);
+                                oProductoBean = (ProductoBean) oProductoDao.get(id_producto, 1);
                                 oCarritoBean.setCantidad(cantidad);
                                 oCarritoBean.setObj_producto(oProductoBean);
                                 newAlCarrito.add(oCarritoBean);
@@ -105,15 +99,11 @@ public class CarritoService implements Serializable {
             } finally {
                 oConnectionPool.disposeConnection();
             }
-        } else {
-            oReplyBean = new ReplyBean(401, "Unauthorized");
-        }
         return oReplyBean;
     }
 
     public ReplyBean reduce() throws Exception {
         ReplyBean oReplyBean;
-        if (checkPermission("reduce")) {
             Gson oGson = new Gson();
             try {
                 String strProducto = oRequest.getParameter("id");
@@ -159,15 +149,11 @@ public class CarritoService implements Serializable {
             } catch (Exception ex) {
                 throw new Exception("ERROR: Service level: reduce method: " + ob + " object: " + ex);
             }
-        } else {
-            oReplyBean = new ReplyBean(401, "Unauthorized");
-        }
         return oReplyBean;
     }
 
     public ReplyBean remove() throws Exception {
         ReplyBean oReplyBean;
-        if (checkPermission("remove")) {
             Gson oGson = new Gson();
             try {
                 String strProducto = oRequest.getParameter("id");
@@ -203,38 +189,26 @@ public class CarritoService implements Serializable {
             } catch (Exception ex) {
                 throw new Exception("ERROR: Service level: remove method: " + ob + " object: " + ex);
             }
-        } else {
-            oReplyBean = new ReplyBean(401, "Unauthorized");
-        }
         return oReplyBean;
     }
 
     public ReplyBean empty() throws Exception {
         ReplyBean oReplyBean;
-        if (checkPermission("empty")) {
             Gson oGson = new Gson();
             oRequest.getSession().setAttribute("carrito", null);
             oReplyBean = new ReplyBean(200, oGson.toJson(oRequest.getSession().getAttribute("carrito")));
-        } else {
-            oReplyBean = new ReplyBean(401, "Unauthorized");
-        }
         return oReplyBean;
     }
 
     public ReplyBean show() throws Exception {
         ReplyBean oReplyBean;
-        if (checkPermission("show")) {
             Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(oRequest.getSession().getAttribute("carrito")));
-        } else {
-            oReplyBean = new ReplyBean(401, "Unauthorized");
-        }
         return oReplyBean;
     }
 
     public ReplyBean buy() throws Exception {
         ReplyBean oReplyBean;
-        if (checkPermission("buy")) {
             ConnectionInterface oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             Connection oConnection = oConnectionPool.newConnection();
             try {
@@ -251,7 +225,7 @@ public class CarritoService implements Serializable {
                     oFacturaBean.setFecha(fecha);
                     oFacturaBean.setIva(21);
                     oFacturaBean.setId_usuario(oUsuarioBean.getId());
-                    oFacturaBean = oFacturaDao.create(oFacturaBean);
+                    oFacturaBean = (FacturaBean) oFacturaDao.create(oFacturaBean);
                     //Crear Lineas (preguntar sobre id_tipoProducto en productoBean)
                     LineaBean oLineaBean = new LineaBean();
                     LineaDao oLineaDao = new LineaDao(oConnection, "linea");
@@ -263,7 +237,7 @@ public class CarritoService implements Serializable {
                         oLineaBean.setId_factura(oFacturaBean.getId());
                         if (o.getCantidad() <= o.getObj_producto().getExistencias()) {
                             oLineaBean.setCantidad(o.getCantidad());
-                            oProductoBean = oProductoDao.get(o.getObj_producto().getId(), 0);
+                            oProductoBean = (ProductoBean) oProductoDao.get(o.getObj_producto().getId(), 0);
                             oProductoBean.setExistencias(oProductoBean.getExistencias() - o.getCantidad());
                             oProductoDao.update(oProductoBean);
                             oLineaBean.setId_producto(o.getObj_producto().getId());
@@ -292,9 +266,6 @@ public class CarritoService implements Serializable {
             } finally {
                 oConnectionPool.disposeConnection();
             }
-        } else {
-            oReplyBean = new ReplyBean(401, "Unauthorized");
-        }
         return oReplyBean;
     }
 

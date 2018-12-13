@@ -8,18 +8,20 @@ package net.daw.bean;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import com.google.gson.annotations.Expose;
+import net.daw.bean.genericBeanInterface.GenericBeanImplementation;
+import net.daw.bean.publicBeanInterface.BeanInterface;
 import net.daw.dao.FacturaDao;
 import net.daw.helper.EncodingHelper;
 import net.daw.dao.TipousuarioDao;
+import net.daw.dao.publicDaoInterface.DaoInterface;
+import net.daw.factory.DaoFactory;
 
 /**
  *
  * @author jesus
  */
-public class UsuarioBean {
+public class UsuarioBean extends GenericBeanImplementation implements BeanInterface {
 
-    @Expose
-    private int id;
     @Expose
     private String dni;
     @Expose
@@ -47,20 +49,12 @@ public class UsuarioBean {
         this.numFacturas = numFacturas;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public TipousuarioBean getObj_tipoUsuario() {
         return obj_tipoUsuario;
     }
 
     public void setObj_tipoUsuario(TipousuarioBean obj_tipoUsuario) {
         this.obj_tipoUsuario = obj_tipoUsuario;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getDni() {
@@ -119,6 +113,7 @@ public class UsuarioBean {
         this.id_tipoUsuario = id_tipoUsuario;
     }
 
+    @Override
     public UsuarioBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception {
         this.setId(oResultSet.getInt("id"));
         this.setDni(oResultSet.getString("dni"));
@@ -130,14 +125,15 @@ public class UsuarioBean {
         FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
         this.setNumFacturas(oFacturaDao.getcountspecific(this.getId()));
         if (expand > 0) {
-            TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, "tipousuario");
-            this.setObj_tipoUsuario(oTipousuarioDao.get(oResultSet.getInt("id_tipoUsuario"), expand - 1));
+            DaoInterface oTipousuarioDao = DaoFactory.getDao(oConnection, "tipousuario");
+            this.setObj_tipoUsuario((TipousuarioBean) oTipousuarioDao.get(oResultSet.getInt("id_tipoUsuario"), expand - 1));
         } else {
             this.setId_tipoUsuario(oResultSet.getInt("id_tipoUsuario"));
         }
         return this;
     }
 
+    @Override
     public String getColumns() {
         String strColumns = "";
         strColumns += "id,";
@@ -151,6 +147,7 @@ public class UsuarioBean {
         return strColumns;
     }
 
+    @Override
     public String getValues() {
         if (id_tipoUsuario == 0) {
             id_tipoUsuario = obj_tipoUsuario.getId();
@@ -167,6 +164,7 @@ public class UsuarioBean {
         return strColumns;
     }
 
+    @Override
     public String getPairs() {
         if (id_tipoUsuario == 0) {
             id_tipoUsuario = obj_tipoUsuario.getId();
