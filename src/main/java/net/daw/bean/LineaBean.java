@@ -79,10 +79,10 @@ public class LineaBean extends GenericBeanImplementation implements BeanInterfac
         this.setCantidad(oResultSet.getInt("cantidad"));
         if (expand > 0) {
             DaoInterface oProductoDao = DaoFactory.getDao(oConnection, "producto");
-            this.setObj_producto((ProductoBean) oProductoDao.get(oResultSet.getInt("id_producto"), expand--));
-
+            this.setObj_producto((ProductoBean) oProductoDao.get(oResultSet.getInt("id_producto"), expand));
             DaoInterface oFacturaDao = DaoFactory.getDao(oConnection, "factura");
-            this.setObj_factura((FacturaBean) oFacturaDao.get(oResultSet.getInt("id_factura"), expand--));
+            this.setObj_factura((FacturaBean) oFacturaDao.get(oResultSet.getInt("id_factura"), expand));
+            expand--;
         }
         return this;
     }

@@ -1,6 +1,7 @@
 package net.daw.service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class ProductoService extends GenericServiceImplementation implements Ser
             for (ProductoBean producto : productos) {
                 oProductoDao.create(producto);
             }
-            Gson oGson = new Gson();
+            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
             oReplyBean = new ReplyBean(200, oGson.toJson("Productos creados: " + number));
         } catch (Exception ex) {
             oReplyBean = new ReplyBean(500,

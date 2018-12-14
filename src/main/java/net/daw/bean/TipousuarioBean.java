@@ -31,7 +31,7 @@ public class TipousuarioBean extends GenericBeanImplementation implements BeanIn
     @Override
     public String getColumns() {
         String strColumns = "";
-        strColumns += "id,";
+        strColumns += "tipousuario.id,";
         strColumns += "tipousuario.desc";
         return strColumns;
     }
@@ -47,9 +47,9 @@ public class TipousuarioBean extends GenericBeanImplementation implements BeanIn
     @Override
     public String getPairs() {
         String strPairs = "";
-        strPairs += "id=" + id + ",";
+        strPairs += "tipousuario.id=" + id + ",";
         strPairs += "tipousuario.desc=" + desc;
-        strPairs += " WHERE id=" + id;
+        strPairs += " WHERE tipousuario.id=" + id;
         return strPairs;
     }
 }

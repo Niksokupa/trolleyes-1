@@ -6,6 +6,7 @@
 package net.daw.service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class LineaService extends GenericServiceImplementation implements Servic
             oConnection = oConnectionPool.newConnection();
             LineaDao oLineaDao = new LineaDao(oConnection, ob);
             int registros = oLineaDao.getcountspecific(id);
-            Gson oGson = new Gson();
+            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
             oReplyBean = new ReplyBean(200, oGson.toJson(registros));
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: getcountspecific method: " + ob + " object", ex);
@@ -60,7 +61,7 @@ public class LineaService extends GenericServiceImplementation implements Servic
             oConnection = oConnectionPool.newConnection();
             LineaDao oLineaDao = new LineaDao(oConnection, ob);
             ArrayList<LineaBean> alLineaBean = oLineaDao.getpagespecific(iRpp, iPage, hmOrder, id, 1);
-            Gson oGson = new Gson();
+            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
             oReplyBean = new ReplyBean(200, oGson.toJson(alLineaBean));
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: getpage method: " + ob + " object", ex);
