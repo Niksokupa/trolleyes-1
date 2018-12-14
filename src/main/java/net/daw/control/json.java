@@ -1,13 +1,8 @@
 package net.daw.control;
 
 import com.google.gson.Gson;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +12,6 @@ import net.daw.constant.ConfigurationConstants;
 import net.daw.constant.ConfigurationConstants.EnvironmentConstans;
 import net.daw.factory.ServiceFactory;
 import net.daw.helper.JsonHelper;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  * Servlet implementation class json

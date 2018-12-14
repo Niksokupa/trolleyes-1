@@ -300,15 +300,6 @@ public class ServiceFactory {
                                 case "remove":
                                     oReplyBean = oUsuarioService.remove();
                                     break;
-                                case "getcount":
-                                    oReplyBean = oUsuarioService.getcount();
-                                    break;
-                                case "getpage":
-                                    oReplyBean = oUsuarioService.getpage();
-                                    break;
-                                case "fill":
-                                    oReplyBean = oUsuarioService.fill();
-                                    break;
                                 case "login":
                                     oReplyBean = oUsuarioService.login();
                                     break;
