@@ -27,8 +27,8 @@ public class ServiceFactory {
 
             UsuarioBean sesion = (UsuarioBean) oRequest.getSession().getAttribute("user");
             int tipoUsuario;
-            
-            if(sesion == null){
+
+            if (sesion == null) {
                 tipoUsuario = 0;
             } else {
                 tipoUsuario = sesion.getObj_tipoUsuario().getId();
@@ -194,7 +194,6 @@ public class ServiceFactory {
                                     break;
                             }
                             break;
-
                         case "producto":
                             ProductoService oProductoService = new ProductoService(oRequest);
                             switch (op) {
@@ -327,12 +326,31 @@ public class ServiceFactory {
                                     break;
                             }
                             break;
+                        case "producto":
+                            ProductoService oProductoService = new ProductoService(oRequest);
+                            switch (op) {
+                                case "get":
+                                    oReplyBean = oProductoService.get();
+                                    break;                      
+                                case "getcount":
+                                    oReplyBean = oProductoService.getcount();
+                                    break;
+                                case "getpage":
+                                    oReplyBean = oProductoService.getpage();
+                                    break;
+                                default:
+                                    oReplyBean = new ReplyBean(500, "Operation doesn't exist");
+                                    break;
+                            }
+                            break;
                         default:
                             oReplyBean = new ReplyBean(500, "Object doesn't exist");
                             break;
                     }
+                    break;
                 default:
                     oReplyBean = new ReplyBean(500, "Error Permisos");
+                    break;
             }
         }
         return oReplyBean;
