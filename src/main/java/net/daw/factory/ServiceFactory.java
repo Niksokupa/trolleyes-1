@@ -16,6 +16,7 @@ public class ServiceFactory {
 
     public static ReplyBean executeService(HttpServletRequest oRequest) throws Exception {
 
+        int tipoUsuario;
         String ob = oRequest.getParameter("ob");
         String op = oRequest.getParameter("op");
         ReplyBean oReplyBean;
@@ -26,7 +27,6 @@ public class ServiceFactory {
         } else {
 
             UsuarioBean sesion = (UsuarioBean) oRequest.getSession().getAttribute("user");
-            int tipoUsuario;
 
             if (sesion == null) {
                 tipoUsuario = 0;
@@ -331,7 +331,7 @@ public class ServiceFactory {
                             switch (op) {
                                 case "get":
                                     oReplyBean = oProductoService.get();
-                                    break;                      
+                                    break;
                                 case "getcount":
                                     oReplyBean = oProductoService.getcount();
                                     break;
