@@ -113,9 +113,6 @@ public class ServiceFactory {
                                 case "fill":
                                     oReplyBean = oUsuarioService.fill();
                                     break;
-                                case "login":
-                                    oReplyBean = oUsuarioService.login();
-                                    break;
                                 case "logout":
                                     oReplyBean = oUsuarioService.logout();
                                     break;
@@ -300,9 +297,6 @@ public class ServiceFactory {
                                 case "remove":
                                     oReplyBean = oUsuarioService.remove();
                                     break;
-                                case "login":
-                                    oReplyBean = oUsuarioService.login();
-                                    break;
                                 case "logout":
                                     oReplyBean = oUsuarioService.logout();
                                     break;
@@ -328,6 +322,55 @@ public class ServiceFactory {
                                     break;
                                 case "getpage":
                                     oReplyBean = oProductoService.getpage();
+                                    break;
+                                default:
+                                    oReplyBean = new ReplyBean(500, "Operation doesn't exist");
+                                    break;
+                            }
+                            break;
+                        case "factura":
+                            FacturaService oFacturaService = new FacturaService(oRequest);
+                            switch (op) {
+                                case "getcountspecific":
+                                    oReplyBean = oFacturaService.getcountspecific();
+                                    break;
+                                case "getpagespecific":
+                                    oReplyBean = oFacturaService.getpagespecific();
+                                    break;
+                                default:
+                                    oReplyBean = new ReplyBean(500, "Operation doesn't exist");
+                                    break;
+                            }
+                            break;
+                        case "linea":
+                            LineaService oLineaService = new LineaService(oRequest);
+                            switch (op) {
+                                case "getcountspecific":
+                                    oReplyBean = oLineaService.getcountspecific();
+                                    break;
+                                case "getpagespecific":
+                                    oReplyBean = oLineaService.getpagespecific();
+                                    break;
+                                default:
+                                    oReplyBean = new ReplyBean(500, "Operation doesn't exist");
+                                    break;
+                            }
+                            break;
+                        default:
+                            oReplyBean = new ReplyBean(500, "Object doesn't exist");
+                            break;
+                    }
+                    break;
+                case 0:
+                    switch (ob) {
+                        case "usuario":
+                            UsuarioService oUsuarioService = new UsuarioService(oRequest);
+                            switch (op) {
+                                case "login":
+                                    oReplyBean = oUsuarioService.login();
+                                    break;
+                                case "check":
+                                    oReplyBean = oUsuarioService.check();
                                     break;
                                 default:
                                     oReplyBean = new ReplyBean(500, "Operation doesn't exist");
