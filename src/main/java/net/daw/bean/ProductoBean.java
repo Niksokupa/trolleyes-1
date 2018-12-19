@@ -117,7 +117,7 @@ public class ProductoBean extends GenericBeanImplementation implements BeanInter
         strColumns += "producto.desc,";
         strColumns += "producto.existencias,";
         strColumns += "producto.precio,";
-        strColumns += "producto.foto";
+        strColumns += "producto.foto,";
         strColumns += "producto.id_tipoProducto";
         return strColumns;
     }
