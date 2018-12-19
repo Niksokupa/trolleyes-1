@@ -127,15 +127,25 @@ public class UsuarioService extends GenericServiceImplementation implements Serv
                 oConnection = oConnectionPool.newConnection();
                 UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
                 oUsuarioDao.updatePass(lastPass, newPass, oUsuarioBeanSession);
+                oReplyBean = new ReplyBean(200, oGson.toJson("Pass updated"));
             } catch (Exception e) {
                 oReplyBean = new ReplyBean(500, e.getMessage());
             } finally {
                 oConnectionPool.disposeConnection();
             }
-        } else {
-            oReplyBean = new ReplyBean(200, oGson.toJson("Pass updated"));
         }
         return oReplyBean;
     }
-
+    
+    public ReplyBean profile() throws Exception {
+         ReplyBean oReplyBean;
+         try {
+             UsuarioBean oUsuarioBean = (UsuarioBean) oRequest.getSession().getAttribute("user");
+             Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
+             oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
+         } catch (Exception ex) {
+             throw new Exception("ERROR: Service level: get method: " + ob + " object", ex);
+         }
+         return oReplyBean;
+     }
 }

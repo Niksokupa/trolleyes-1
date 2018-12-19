@@ -78,7 +78,7 @@ public class UsuarioDao extends GenericDaoImplementation implements DaoInterface
         if (!lastPass.equals(oUsuarioBean.getPass())) {
             throw new Exception("La contraseña antigua no coincide.");
         } else if (newPass.equals(usuarioSession.getPass())) {
-            throw new Exception("Pass nueva igual a pass antigua");
+            throw new Exception("Tu nueva contraseña no puede ser igual que la actual.");
         } else {
             usuarioSession.setPass(newPass);
             update(usuarioSession);
